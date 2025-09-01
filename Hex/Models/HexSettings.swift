@@ -240,6 +240,42 @@ enum AIProviderType: String, Codable, CaseIterable, Equatable {
 private var cachedSettings: DictaFlowSettings? = nil
 private var lastSettingsLoadTime: Date = .distantPast
 
+// Helper function to get the settings file URL
+private func getSettingsFileURL() -> URL {
+    let fm = FileManager.default
+    let appSupportDir = try! fm.url(
+        for: .applicationSupportDirectory,
+        in: .userDomainMask,
+        appropriateFor: nil,
+        create: true
+    )
+    let appFolder = appSupportDir.appendingPathComponent("com.kitlangton.Hex", isDirectory: true)
+    
+    // Ensure the directory exists
+    try? fm.createDirectory(at: appFolder, withIntermediateDirectories: true)
+    
+    return appFolder.appendingPathComponent("dictaflow_settings.json")
+}
+
+// Helper function to migrate settings from old Documents location to new Application Support location
+private func migrateSettingsIfNeeded() {
+    let fm = FileManager.default
+    let newURL = getSettingsFileURL()
+    let oldURL = URL.documentsDirectory.appending(component: "dictaflow_settings.json")
+    
+    // If new location doesn't exist but old location does, migrate
+    if !fm.fileExists(atPath: newURL.path) && fm.fileExists(atPath: oldURL.path) {
+        do {
+            try fm.copyItem(at: oldURL, to: newURL)
+            // Optionally delete the old file after successful migration
+            try? fm.removeItem(at: oldURL)
+            print("Successfully migrated settings from Documents to Application Support")
+        } catch {
+            print("Failed to migrate settings: \(error)")
+        }
+    }
+}
+
 // Helper function to get cached settings or load from disk
 func getCachedSettings() -> DictaFlowSettings {
     // Use cached settings if they exist and are recent (within last 5 seconds)
@@ -248,9 +284,12 @@ func getCachedSettings() -> DictaFlowSettings {
         return cached
     }
     
+    // Perform migration check on first load
+    migrateSettingsIfNeeded()
+    
     // Otherwise read from disk
     do {
-        let url = URL.documentsDirectory.appending(component: "dictaflow_settings.json")
+        let url = getSettingsFileURL()
         if FileManager.default.fileExists(atPath: url.path) {
             let data = try Data(contentsOf: url)
             let settings = try JSONDecoder().decode(DictaFlowSettings.self, from: data)
@@ -277,7 +316,7 @@ extension SharedReaderKey
 {
 	static var dictaFlowSettings: Self {
 		Self[
-			.fileStorage(URL.documentsDirectory.appending(component: "dictaflow_settings.json")),
+			.fileStorage(getSettingsFileURL()),
 			default: getCachedSettings()
 		]
 	}

@@ -1,6 +1,8 @@
 build/
+dist/
 updates/
 .vscode
+.idea/
 .DS_Store
 
 # Xcode

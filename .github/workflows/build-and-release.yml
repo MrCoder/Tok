@@ -1,0 +1,111 @@
+name: Build and Release DictaFlow
+
+on:
+  push:
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: '16.2'
+        
+    - name: Install dependencies
+      run: |
+        # Run your CI post clone script
+        chmod +x ci_scripts/ci_post_clone.sh
+        ./ci_scripts/ci_post_clone.sh
+        
+    - name: Cache Swift Package Manager
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/Library/Caches/org.swift.swiftpm/
+          ~/.swiftpm/
+        key: ${{ runner.os }}-spm-${{ hashFiles('**/Package.resolved') }}
+        restore-keys: |
+          ${{ runner.os }}-spm-
+          
+    - name: Build Debug (for PRs)
+      if: github.event_name == 'pull_request'
+      run: |
+        xcodebuild -scheme DictaFlow -configuration Debug -destination 'platform=macOS' build
+        
+    - name: Build Release Archive (for tags)
+      if: startsWith(github.ref, 'refs/tags/v')
+      env:
+        DEVELOPMENT_TEAM: ${{ secrets.DEVELOPMENT_TEAM }}
+        CODE_SIGN_IDENTITY: ${{ secrets.CODE_SIGN_IDENTITY }}
+      run: |
+        # Import certificates
+        echo "${{ secrets.BUILD_CERTIFICATE_BASE64 }}" | base64 --decode > certificate.p12
+        security create-keychain -p "${{ secrets.KEYCHAIN_PASSWORD }}" build.keychain
+        security default-keychain -s build.keychain
+        security unlock-keychain -p "${{ secrets.KEYCHAIN_PASSWORD }}" build.keychain
+        security import certificate.p12 -k build.keychain -P "${{ secrets.P12_PASSWORD }}" -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "${{ secrets.KEYCHAIN_PASSWORD }}" build.keychain
+        
+        # Build archive
+        xcodebuild -scheme DictaFlow -configuration Release archive -archivePath ./build/DictaFlow.xcarchive
+        
+        # Export for distribution
+        xcodebuild -exportArchive -archivePath ./build/DictaFlow.xcarchive -exportPath ./build/export -exportOptionsPlist exportOptions.plist
+        
+    - name: Create DMG
+      if: startsWith(github.ref, 'refs/tags/v')
+      run: |
+        # Install create-dmg if needed
+        brew install create-dmg
+        
+        # Create DMG
+        create-dmg \
+          --volname "DictaFlow" \
+          --volicon "./Hex/Assets.xcassets/AppIcon.appiconset/iTunesArtwork@2x.png" \
+          --window-pos 200 120 \
+          --window-size 600 300 \
+          --icon-size 100 \
+          --icon "DictaFlow.app" 175 120 \
+          --hide-extension "DictaFlow.app" \
+          --app-drop-link 425 120 \
+          "DictaFlow-${{ github.ref_name }}.dmg" \
+          "./build/export/"
+          
+    - name: Notarize DMG
+      if: startsWith(github.ref, 'refs/tags/v')
+      env:
+        NOTARY_USERNAME: ${{ secrets.NOTARY_USERNAME }}
+        NOTARY_PASSWORD: ${{ secrets.NOTARY_PASSWORD }}
+        NOTARY_TEAM_ID: ${{ secrets.NOTARY_TEAM_ID }}
+      run: |
+        # Submit for notarization
+        xcrun notarytool submit "DictaFlow-${{ github.ref_name }}.dmg" \
+          --apple-id "$NOTARY_USERNAME" \
+          --password "$NOTARY_PASSWORD" \
+          --team-id "$NOTARY_TEAM_ID" \
+          --wait
+          
+        # Staple notarization
+        xcrun stapler staple "DictaFlow-${{ github.ref_name }}.dmg"
+        
+    - name: Create GitHub Release
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          DictaFlow-${{ github.ref_name }}.dmg
+        draft: true
+        prerelease: ${{ contains(github.ref, '-beta') || contains(github.ref, '-alpha') }}
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
