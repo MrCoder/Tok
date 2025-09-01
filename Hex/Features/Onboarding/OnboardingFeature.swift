@@ -9,7 +9,7 @@ import ApplicationServices
 struct OnboardingFeature {
   @ObservableState
   struct State {
-    @Shared(.hexSettings) var hexSettings: HexSettings
+    @Shared(.dictaFlowSettings) var dictaFlowSettings: DictaFlowSettings
     
     var currentStep: OnboardingStep = .modelSelection
     var microphonePermission: PermissionStatus = .notDetermined
@@ -46,9 +46,9 @@ struct OnboardingFeature {
         case .modelSelection:
           return "Choose a speech-to-text model to download and warm up so transcription is ready when you need it."
         case .microphone:
-          return "Tok needs access to your microphone to record and transcribe your speech."
+          return "DictaFlow needs access to your microphone to record and transcribe your speech."
         case .accessibility:
-          return "Accessibility permissions allow Tok to monitor your hotkey presses so you can quickly start recording."
+          return "Accessibility permissions allow DictaFlow to monitor your hotkey presses so you can quickly start recording."
         case .screenCapture:
           return "Screen capture helps provide context for better transcription accuracy by analyzing what you're working on."
         case .hotkey:
@@ -186,7 +186,7 @@ struct OnboardingFeature {
       case let .screenCapturePermissionUpdated(status):
         state.screenCapturePermission = status
         if status == .granted {
-          state.$hexSettings.withLock { $0.enableScreenCapture = true }
+          state.$dictaFlowSettings.withLock { $0.enableScreenCapture = true }
           return .run { send in
             try await Task.sleep(nanoseconds: 1_000_000_000)
             await send(.nextStep)
@@ -223,7 +223,7 @@ struct OnboardingFeature {
       case .completeOnboarding:
         state.hasCompletedOnboarding = true
         state.isComplete = true
-        state.$hexSettings.withLock { $0.hasCompletedOnboarding = true }
+        state.$dictaFlowSettings.withLock { $0.hasCompletedOnboarding = true }
         return .none
         
       case let .updateTestTranscription(text):
@@ -241,7 +241,7 @@ struct OnboardingFeature {
         return .none
         
       case let .hotkeySet(hotkey):
-        state.$hexSettings.withLock { $0.hotkey = hotkey }
+        state.$dictaFlowSettings.withLock { $0.hotkey = hotkey }
         return .send(.nextStep)
       }
     }

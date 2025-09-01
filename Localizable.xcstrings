@@ -344,14 +344,14 @@
     "Enhancement Prompt" : {
 
     },
-    "Ensure Tok can access your microphone and system accessibility features." : {
+    "Ensure DictaFlow can access your microphone and system accessibility features." : {
       "comment" : "Footer for permissions section in settings",
       "extractionState" : "stale",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sicherstellen, dass Tok dein Mikrofon und Systemweite Bedienungshilfen benutzen kann."
+            "value" : "Sicherstellen, dass DictaFlow dein Mikrofon und Systemweite Bedienungshilfen benutzen kann."
           }
         }
       }
@@ -810,13 +810,13 @@
     "To set up Ollama:" : {
 
     },
-    "Tok is open source" : {
+    "DictaFlow is open source" : {
       "comment" : "In about section in settings.",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tok ist Open Source"
+            "value" : "DictaFlow ist Open Source"
           }
         }
       }

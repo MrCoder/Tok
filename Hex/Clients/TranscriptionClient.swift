@@ -32,8 +32,8 @@ struct TranscriptionSegment: Equatable {
 struct TranscriptionClient {
   /// Transcribes an audio file at the specified `URL` using the named `model`.
   /// Reports transcription progress via `progressCallback`.
-  /// Optionally accepts HexSettings for features like auto-capitalization.
-  var transcribe: @Sendable (URL, String, DecodingOptions, HexSettings?, @escaping (Progress) -> Void) async throws -> String
+  /// Optionally accepts DictaFlowSettings for features like auto-capitalization.
+  var transcribe: @Sendable (URL, String, DecodingOptions, DictaFlowSettings?, @escaping (Progress) -> Void) async throws -> String
 
   /// Ensures a model is downloaded (if missing) and loaded into memory, reporting progress via `progressCallback`.
   var downloadModel: @Sendable (String, @escaping (Progress) -> Void) async throws -> Void
@@ -55,7 +55,7 @@ struct TranscriptionClient {
 
   /// Starts streaming transcription from microphone using AudioStreamTranscriber
   /// Returns updates via the callback with real-time transcription progress
-  var startStreamTranscription: @Sendable (String, DecodingOptions, HexSettings?, @escaping (StreamTranscriptionUpdate) -> Void) async throws -> Void
+  var startStreamTranscription: @Sendable (String, DecodingOptions, DictaFlowSettings?, @escaping (StreamTranscriptionUpdate) -> Void) async throws -> Void
   
   /// Stops the current streaming transcription
   var stopStreamTranscription: @Sendable () async -> Void
@@ -322,7 +322,7 @@ actor TranscriptionClientLive {
     url: URL,
     model: String,
     options: DecodingOptions,
-    settings: HexSettings? = nil,
+    settings: DictaFlowSettings? = nil,
     progressCallback: @escaping (Progress) -> Void
   ) async throws -> String {
     // Load or switch to the required model if needed.
@@ -546,7 +546,7 @@ actor TranscriptionClientLive {
   func startStreamTranscription(
     model: String,
     options: DecodingOptions,
-    settings: HexSettings? = nil,
+    settings: DictaFlowSettings? = nil,
     updateCallback: @escaping (StreamTranscriptionUpdate) -> Void
   ) async throws {
     // Stop any existing stream

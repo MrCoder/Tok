@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Main gradient for soundwaves -->
+    <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#06b6d4;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8b5cf6;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Secondary gradient for flow elements -->
+    <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.4" />
+    </linearGradient>
+    
+    <!-- Text gradient -->
+    <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#1e293b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#475569;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle for depth -->
+  <circle cx="30" cy="30" r="25" fill="url(#flowGradient)" opacity="0.1"/>
+  
+  <!-- Soundwave visualization -->
+  <g transform="translate(10, 30)">
+    <!-- Wave bars representing sound/voice input -->
+    <rect x="0" y="-8" width="3" height="16" rx="1.5" fill="url(#waveGradient)">
+      <animate attributeName="height" values="16;24;16" dur="1.5s" repeatCount="indefinite"/>
+      <animate attributeName="y" values="-8;-12;-8" dur="1.5s" repeatCount="indefinite"/>
+    </rect>
+    <rect x="6" y="-12" width="3" height="24" rx="1.5" fill="url(#waveGradient)">
+      <animate attributeName="height" values="24;32;24" dur="1.5s" repeatCount="indefinite" begin="0.1s"/>
+      <animate attributeName="y" values="-12;-16;-12" dur="1.5s" repeatCount="indefinite" begin="0.1s"/>
+    </rect>
+    <rect x="12" y="-6" width="3" height="12" rx="1.5" fill="url(#waveGradient)">
+      <animate attributeName="height" values="12;20;12" dur="1.5s" repeatCount="indefinite" begin="0.2s"/>
+      <animate attributeName="y" values="-6;-10;-6" dur="1.5s" repeatCount="indefinite" begin="0.2s"/>
+    </rect>
+    <rect x="18" y="-10" width="3" height="20" rx="1.5" fill="url(#waveGradient)">
+      <animate attributeName="height" values="20;28;20" dur="1.5s" repeatCount="indefinite" begin="0.3s"/>
+      <animate attributeName="y" values="-10;-14;-10" dur="1.5s" repeatCount="indefinite" begin="0.3s"/>
+    </rect>
+    <rect x="24" y="-4" width="3" height="8" rx="1.5" fill="url(#waveGradient)">
+      <animate attributeName="height" values="8;16;8" dur="1.5s" repeatCount="indefinite" begin="0.4s"/>
+      <animate attributeName="y" values="-4;-8;-4" dur="1.5s" repeatCount="indefinite" begin="0.4s"/>
+    </rect>
+  </g>
+  
+  <!-- Flow arrow showing transformation -->
+  <g transform="translate(40, 30)">
+    <path d="M0,0 L8,0 M5,-3 L8,0 L5,3" stroke="url(#waveGradient)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  
+  <!-- Text output representation -->
+  <g transform="translate(52, 30)">
+    <rect x="0" y="-2" width="12" height="1.5" rx="0.75" fill="url(#waveGradient)" opacity="0.8"/>
+    <rect x="0" y="1" width="8" height="1.5" rx="0.75" fill="url(#waveGradient)" opacity="0.6"/>
+    <rect x="0" y="4" width="10" height="1.5" rx="0.75" fill="url(#waveGradient)" opacity="0.7"/>
+  </g>
+  
+  <!-- Company name -->
+  <text x="75" y="25" font-family="Inter, -apple-system, sans-serif" font-size="18" font-weight="700" fill="url(#textGradient)">
+    DictaFlow
+  </text>
+  <text x="75" y="40" font-family="Inter, -apple-system, sans-serif" font-size="10" font-weight="500" fill="#64748b" opacity="0.8">
+    .ai
+  </text>
+</svg>

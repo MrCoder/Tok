@@ -1,0 +1,53 @@
+name: Deploy Website to Cloudflare Pages
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'website/**' ]
+  pull_request:
+    branches: [ main ]
+    paths: [ 'website/**' ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Deploy to Cloudflare Pages
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Validate Website Files
+        run: |
+          echo "Validating website structure..."
+          ls -la website/
+          
+          # Check required files exist
+          test -f website/index.html || (echo "index.html missing" && exit 1)
+          test -f website/css/style.css || (echo "style.css missing" && exit 1)
+          test -f website/js/script.js || (echo "script.js missing" && exit 1)
+          test -f website/_redirects || (echo "_redirects missing" && exit 1)
+          test -f website/_headers || (echo "_headers missing" && exit 1)
+          
+          echo "✅ All required files present"
+          
+      - name: HTML Validation (Optional)
+        run: |
+          # This is optional - you can enable HTML validation if desired
+          echo "HTML validation would run here"
+          # You could add html5validator or similar tools
+          
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: dictaflow-website
+          directory: website
+          # Cloudflare Pages will handle the deployment
+          
+      - name: Deployment Status
+        run: |
+          echo "🚀 Website deployed successfully!"
+          echo "Production URL: https://dictaflow.ai"
+          echo "Cloudflare Pages URL: https://dictaflow-website.pages.dev"

@@ -1,14 +1,14 @@
 import ComposableArchitecture
 import SwiftUI
 
-class HexAppDelegate: NSObject, NSApplicationDelegate {
+class DictaFlowAppDelegate: NSObject, NSApplicationDelegate {
 	var invisibleWindow: InvisibleWindow?
 	var settingsWindow: NSWindow?
 	var statusItem: NSStatusItem!
 
 	@Dependency(\.soundEffects) var soundEffect
 	@Dependency(\.recording) var recording
-	@Shared(.hexSettings) var hexSettings: HexSettings
+	@Shared(.dictaFlowSettings) var dictaFlowSettings: DictaFlowSettings
 
 	func applicationDidFinishLaunching(_: Notification) {
 		if isTesting {
@@ -17,12 +17,12 @@ class HexAppDelegate: NSObject, NSApplicationDelegate {
 		}
 
 		// Reset model warm status to cold since models are unloaded when app closes
-		$hexSettings.withLock { $0.transcriptionModelWarmStatus = .cold }
+		$dictaFlowSettings.withLock { $0.transcriptionModelWarmStatus = .cold }
 
 		Task {
 			await soundEffect.preloadSounds()
 		}
-		print("HexAppDelegate did finish launching")
+		print("DictaFlowAppDelegate did finish launching")
 
 		// Set activation policy first
 		updateAppMode()
@@ -45,7 +45,7 @@ class HexAppDelegate: NSObject, NSApplicationDelegate {
 		guard invisibleWindow == nil else {
 			return
 		}
-		let transcriptionStore = HexApp.appStore.scope(state: \.transcription, action: \.transcription)
+		let transcriptionStore = DictaFlowApp.appStore.scope(state: \.transcription, action: \.transcription)
 		let transcriptionView = TranscriptionView(store: transcriptionStore)
 			// Removed extra top padding so status bar sticks to very top edge
 			.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
@@ -60,7 +60,7 @@ class HexAppDelegate: NSObject, NSApplicationDelegate {
 			return
 		}
 
-		let settingsView = AppView(store: HexApp.appStore)
+		let settingsView = AppView(store: DictaFlowApp.appStore)
 		let settingsWindow = NSWindow(
 			contentRect: .init(x: 0, y: 0, width: 700, height: 700),
 			styleMask: [.titled, .fullSizeContentView, .closable, .miniaturizable],
@@ -85,8 +85,8 @@ class HexAppDelegate: NSObject, NSApplicationDelegate {
 
 	@MainActor
 	private func updateAppMode() {
-		print("hexSettings.showDockIcon: \(hexSettings.showDockIcon)")
-		if hexSettings.showDockIcon {
+		print("dictaFlowSettings.showDockIcon: \(dictaFlowSettings.showDockIcon)")
+		if dictaFlowSettings.showDockIcon {
 			NSApp.setActivationPolicy(.regular)
 		} else {
 			NSApp.setActivationPolicy(.accessory)

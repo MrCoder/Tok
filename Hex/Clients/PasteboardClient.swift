@@ -39,11 +39,11 @@ extension DependencyValues {
 }
 
 struct PasteboardClientLive {
-    @Shared(.hexSettings) var hexSettings: HexSettings
+    @Shared(.dictaFlowSettings) var dictaFlowSettings: DictaFlowSettings
 
     @MainActor
     func paste(text: String) async {
-        if hexSettings.useClipboardPaste {
+        if dictaFlowSettings.useClipboardPaste {
             await pasteWithClipboard(text)
         } else {
             simulateTypingWithAppleScript(text)
@@ -72,7 +72,7 @@ struct PasteboardClientLive {
         }
 
         // Generate a unique name for the backup pasteboard
-        let tempName = "xyz.2qs.Tok.backup.\(UUID().uuidString)"
+        let tempName = "ai.dictaflow.backup.\(UUID().uuidString)"
         let backupPasteboard = NSPasteboard(name: .init(tempName))
 
         // Clear the backup pasteboard and write all contents from original
@@ -197,7 +197,7 @@ struct PasteboardClientLive {
         let pasteboard = NSPasteboard.general
         
         // Save the original pasteboard only if we need to restore it
-        let backupPasteboard = hexSettings.copyToClipboard ? nil : savePasteboardState(pasteboard: pasteboard)
+        let backupPasteboard = dictaFlowSettings.copyToClipboard ? nil : savePasteboardState(pasteboard: pasteboard)
         
         // Set our text in the clipboard
         pasteboard.clearContents()
@@ -248,7 +248,7 @@ struct PasteboardClientLive {
         // 1. User doesn't want to keep text in clipboard AND
         // 2. The paste operation succeeded AND
         // 3. We have a backup pasteboard
-        if !hexSettings.copyToClipboard && pasteSucceeded && backupPasteboard != nil {
+        if !dictaFlowSettings.copyToClipboard && pasteSucceeded && backupPasteboard != nil {
             // Give paste operation time to complete
             try? await Task.sleep(for: .milliseconds(200))
             
@@ -260,7 +260,7 @@ struct PasteboardClientLive {
         
         // If we failed to paste AND user doesn't want clipboard retention,
         // log the issue but leave text in clipboard as fallback
-        if !pasteSucceeded && !hexSettings.copyToClipboard {
+        if !pasteSucceeded && !dictaFlowSettings.copyToClipboard {
             print("Paste operation failed. Text remains in clipboard as fallback.")
         }
     }

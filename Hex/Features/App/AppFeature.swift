@@ -89,7 +89,7 @@ struct AppFeature {
         state.activeTab = tab
         return .none
       case .checkShouldShowOnboarding:
-        state.shouldShowOnboarding = !state.onboarding.hexSettings.hasCompletedOnboarding
+        state.shouldShowOnboarding = !state.onboarding.dictaFlowSettings.hasCompletedOnboarding
         return .none
       case .dismissOnboarding:
         state.shouldShowOnboarding = false
@@ -135,7 +135,7 @@ struct AppView: View {
           .tag(AppFeature.ActiveTab.about)
 
         // Show Developer tab only when developer mode is enabled in settings
-        if store.settings.hexSettings.developerModeEnabled {
+        if store.settings.dictaFlowSettings.developerModeEnabled {
           Button {
             store.send(.setActiveTab(.developer))
           } label: {

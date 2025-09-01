@@ -173,7 +173,7 @@ struct TranscriptionFeature {
     // Alert state – set to true when a transcription potentially failed
     var showTranscriptionFailedAlert: Bool = false
     
-    @Shared(.hexSettings) var hexSettings: HexSettings
+    @Shared(.dictaFlowSettings) var dictaFlowSettings: DictaFlowSettings
     @Shared(.transcriptionHistory) var transcriptionHistory: TranscriptionHistory
 
     // Manual Equatable conformance – we only care about fields that drive the
@@ -416,16 +416,16 @@ struct TranscriptionFeature {
       // MARK: - Model Prewarming Actions
 
       case .prewarmSelectedModel:
-        let selectedModel = state.hexSettings.selectedModel
+        let selectedModel = state.dictaFlowSettings.selectedModel
 
         // Only prewarm if the model is not already warm
-        guard state.hexSettings.transcriptionModelWarmStatus != .warm else {
+        guard state.dictaFlowSettings.transcriptionModelWarmStatus != .warm else {
           print("[TranscriptionFeature] Model \(selectedModel) is already warm, skipping prewarming")
           return .none
         }
 
         // Set warming status
-        state.$hexSettings.withLock { $0.transcriptionModelWarmStatus = .warming }
+        state.$dictaFlowSettings.withLock { $0.transcriptionModelWarmStatus = .warming }
 
         return .run { send in
           do {
@@ -464,10 +464,10 @@ struct TranscriptionFeature {
         switch result {
         case let .success(model):
           print("[TranscriptionFeature] Successfully prewarmed model: \(model)")
-          state.$hexSettings.withLock { $0.transcriptionModelWarmStatus = .warm }
+          state.$dictaFlowSettings.withLock { $0.transcriptionModelWarmStatus = .warm }
         case let .failure(error):
           print("[TranscriptionFeature] Failed to prewarm model: \(error)")
-          state.$hexSettings.withLock { $0.transcriptionModelWarmStatus = .cold }
+          state.$dictaFlowSettings.withLock { $0.transcriptionModelWarmStatus = .cold }
         }
         return .none
 
@@ -551,7 +551,7 @@ private extension TranscriptionFeature {
     .run { send in
       var hotKeyProcessor: HotKeyProcessor = .init(hotkey: HotKey(key: nil, modifiers: [.option]))
       @Shared(.isSettingHotKey) var isSettingHotKey: Bool
-      @Shared(.hexSettings) var hexSettings: HexSettings
+      @Shared(.dictaFlowSettings) var dictaFlowSettings: DictaFlowSettings
 
       // Handle incoming key events
       keyEventMonitor.handleKeyEvent { keyEvent in
@@ -569,8 +569,8 @@ private extension TranscriptionFeature {
         }
 
         // Always keep hotKeyProcessor in sync with current user hotkey preference
-        hotKeyProcessor.hotkey = hexSettings.hotkey
-        hotKeyProcessor.useDoubleTapOnly = hexSettings.useDoubleTapOnly
+        hotKeyProcessor.hotkey = dictaFlowSettings.hotkey
+        hotKeyProcessor.useDoubleTapOnly = dictaFlowSettings.useDoubleTapOnly
 
         // Process the key event
         switch hotKeyProcessor.process(keyEvent: keyEvent) {
@@ -585,7 +585,7 @@ private extension TranscriptionFeature {
           }
           // If the hotkey is purely modifiers, return false to keep it from interfering with normal usage
           // But if useDoubleTapOnly is true, always intercept the key
-          return hexSettings.useDoubleTapOnly || keyEvent.key != nil
+          return dictaFlowSettings.useDoubleTapOnly || keyEvent.key != nil
 
         case .stopRecording:
           Task { await send(TranscriptionFeature.Action.hotKeyReleased) }
@@ -638,7 +638,7 @@ private extension TranscriptionFeature {
 
     // Watchdog: while in press-and-hold, periodically verify the hotkey is still held.
     let watchdog = Effect.run { send in
-      @Shared(.hexSettings) var settings: HexSettings
+      @Shared(.dictaFlowSettings) var settings: DictaFlowSettings
 
       while !Task.isCancelled {
         try await Task.sleep(for: .milliseconds(50))
@@ -685,19 +685,19 @@ private extension TranscriptionFeature {
     state.streamingTranscription.reset()
 
     // Prevent system sleep during recording
-    if state.hexSettings.preventSystemSleep {
+    if state.dictaFlowSettings.preventSystemSleep {
       preventSystemSleep(&state)
     }
 
     // Extract required values used later in the async transcription sequence
-    let model = state.hexSettings.selectedModel
-    let language = state.hexSettings.outputLanguage
-    let settings = state.hexSettings
+    let model = state.dictaFlowSettings.selectedModel
+    let language = state.dictaFlowSettings.outputLanguage
+    let settings = state.dictaFlowSettings
     // Values for image analysis
-    let providerTypeForImage = state.hexSettings.aiProviderType
-    let imageModel = providerTypeForImage == .ollama ? state.hexSettings.selectedImageModel : state.hexSettings.selectedRemoteImageModel
-    let groqAPIKey = state.hexSettings.groqAPIKey
-    let imageAnalysisPrompt = state.hexSettings.imageAnalysisPrompt
+    let providerTypeForImage = state.dictaFlowSettings.aiProviderType
+    let imageModel = providerTypeForImage == .ollama ? state.dictaFlowSettings.selectedImageModel : state.dictaFlowSettings.selectedRemoteImageModel
+    let groqAPIKey = state.dictaFlowSettings.groqAPIKey
+    let imageAnalysisPrompt = state.dictaFlowSettings.imageAnalysisPrompt
 
     print("[TranscriptionFeature] Starting recording…")
 
@@ -808,10 +808,10 @@ private extension TranscriptionFeature {
 
     let durationIsLongEnough: Bool = {
       guard let startTime = state.recordingStartTime else { return false }
-      return Date().timeIntervalSince(startTime) > state.hexSettings.minimumKeyTime
+      return Date().timeIntervalSince(startTime) > state.dictaFlowSettings.minimumKeyTime
     }()
 
-    guard (durationIsLongEnough || state.hexSettings.hotkey.key != nil) else {
+    guard (durationIsLongEnough || state.dictaFlowSettings.hotkey.key != nil) else {
       // If the user recorded for less than minimumKeyTime, just discard
       // unless the hotkey includes a regular key, in which case, we can assume it was intentional
       print("Recording was too short, discarding")
@@ -832,9 +832,9 @@ private extension TranscriptionFeature {
     // Keep the context prompt (may be set by delayed screenshot capture earlier)
     let contextPrompt = state.contextPrompt
     let recordingDuration: TimeInterval = state.recordingStartTime.map { Date().timeIntervalSince($0) } ?? 0
-    let model = state.hexSettings.selectedModel
-    let language = state.hexSettings.outputLanguage
-    let settings = state.hexSettings
+    let model = state.dictaFlowSettings.selectedModel
+    let language = state.dictaFlowSettings.outputLanguage
+    let settings = state.dictaFlowSettings
     
     state.isPrewarming = true
     
@@ -961,7 +961,7 @@ private extension TranscriptionFeature {
           }
 
           print("Chosen transcription result: \"\(finalResult)\"")
-          TokLogger.log("Final transcription: \(finalResult)")
+          DictaFlowLogger.log("Final transcription: \(finalResult)")
           await send(.transcriptionResult(finalResult))
         } catch {
           print("Error transcribing audio: \(error)")
@@ -989,19 +989,19 @@ private extension TranscriptionFeature {
       return .none
     }
     // First check if we should use AI enhancement
-    if state.hexSettings.useAIEnhancement {
+    if state.dictaFlowSettings.useAIEnhancement {
       // Keep state.isTranscribing = true since we're still processing
       
       // Store the original transcription for error handling/fallback
       state.pendingTranscription = trimmedResult
       
       // Extract values to avoid capturing inout parameter
-      let providerType = state.hexSettings.aiProviderType
-      let selectedAIModel = state.hexSettings.selectedAIModel
-      let selectedRemoteModel = state.hexSettings.selectedRemoteModel
-      let promptText = state.hexSettings.aiEnhancementPrompt
-      let temperature = state.hexSettings.aiEnhancementTemperature
-      let groqAPIKey = state.hexSettings.groqAPIKey
+      let providerType = state.dictaFlowSettings.aiProviderType
+      let selectedAIModel = state.dictaFlowSettings.selectedAIModel
+      let selectedRemoteModel = state.dictaFlowSettings.selectedRemoteModel
+      let promptText = state.dictaFlowSettings.aiEnhancementPrompt
+      let temperature = state.dictaFlowSettings.aiEnhancementTemperature
+      let groqAPIKey = state.dictaFlowSettings.groqAPIKey
       let baseContextPrompt = state.contextPrompt
       let realTimeText = state.realTimeTranscription
 
@@ -1301,7 +1301,7 @@ private extension TranscriptionFeature {
 private extension TranscriptionFeature {
   func preventSystemSleep(_ state: inout State) {
     // Prevent system sleep during recording
-    let reasonForActivity = "Tok Voice Recording" as CFString
+    let reasonForActivity = "DictaFlow Voice Recording" as CFString
     var assertionID: IOPMAssertionID = 0
     let success = IOPMAssertionCreateWithName(
       kIOPMAssertionTypeNoDisplaySleep as CFString,

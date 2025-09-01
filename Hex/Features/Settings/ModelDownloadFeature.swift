@@ -93,7 +93,7 @@ public struct ModelDownloadFeature {
 	@ObservableState
 	public struct State: Equatable {
 		// Shared user settings
-		@Shared(.hexSettings) var hexSettings: HexSettings
+		@Shared(.dictaFlowSettings) var dictaFlowSettings: DictaFlowSettings
 
 		// Remote data
 		public var availableModels: IdentifiedArrayOf<ModelInfo> = []
@@ -114,7 +114,7 @@ public struct ModelDownloadFeature {
         public var hasLoadedModels: Bool = false
 
 		// Convenience computed vars
-		var selectedModel: String { hexSettings.selectedModel }
+		var selectedModel: String { dictaFlowSettings.selectedModel }
 		var selectedModelIsDownloaded: Bool {
 			availableModels[id: selectedModel]?.isDownloaded ?? false
 		}
@@ -177,7 +177,7 @@ public struct ModelDownloadFeature {
 			return .none
 
 		case let .selectModel(model):
-			state.$hexSettings.withLock {
+			state.$dictaFlowSettings.withLock {
 				$0.selectedModel = model
 				$0.transcriptionModelWarmStatus = .cold
 			}
@@ -267,7 +267,7 @@ public struct ModelDownloadFeature {
 
 		case let .prewarmModel(model):
 			// Set warming status
-			state.$hexSettings.withLock { $0.transcriptionModelWarmStatus = .warming }
+			state.$dictaFlowSettings.withLock { $0.transcriptionModelWarmStatus = .warming }
 
 			return .run { send in
 				do {
@@ -290,9 +290,9 @@ public struct ModelDownloadFeature {
 		case let .prewarmCompleted(result):
 			switch result {
 			case .success:
-				state.$hexSettings.withLock { $0.transcriptionModelWarmStatus = .warm }
+				state.$dictaFlowSettings.withLock { $0.transcriptionModelWarmStatus = .warm }
 			case .failure:
-				state.$hexSettings.withLock { $0.transcriptionModelWarmStatus = .cold }
+				state.$dictaFlowSettings.withLock { $0.transcriptionModelWarmStatus = .cold }
 			}
 			return .none
 
@@ -378,10 +378,10 @@ public struct ModelDownloadView: View {
 			}
 
 			// ── Model readiness warning ─────────────────────────────
-			if store.hasLoadedModels && ((!store.selectedModelIsDownloaded) || store.hexSettings.transcriptionModelWarmStatus != .warm) {
+			if store.hasLoadedModels && ((!store.selectedModelIsDownloaded) || store.dictaFlowSettings.transcriptionModelWarmStatus != .warm) {
 				ModelWarningView(
 					isDownloaded: store.selectedModelIsDownloaded,
-					warmStatus: store.hexSettings.transcriptionModelWarmStatus
+					warmStatus: store.dictaFlowSettings.transcriptionModelWarmStatus
 				)
 			}
 
@@ -431,7 +431,7 @@ private struct AllModelsPicker: View {
 		Picker(
 			"Selected Model",
 			selection: Binding(
-				get: { store.hexSettings.selectedModel },
+				get: { store.dictaFlowSettings.selectedModel },
 				set: { store.send(.selectModel($0)) }
 			)
 		) {
@@ -448,10 +448,10 @@ private struct AllModelsPicker: View {
 							.foregroundColor(.blue)
 					}
 					// Show green check for selected model
-					if info.name == store.hexSettings.selectedModel {
+					if info.name == store.dictaFlowSettings.selectedModel {
 						Image(systemName: "checkmark.circle.fill")
 							.foregroundColor(.green)
-						ModelWarmStatusIndicator(status: store.hexSettings.transcriptionModelWarmStatus)
+						ModelWarmStatusIndicator(status: store.dictaFlowSettings.transcriptionModelWarmStatus)
 					}
 				}
 				.tag(info.name)
@@ -498,7 +498,7 @@ private struct CuratedRow: View {
 	let model: CuratedModelInfo
 
 	var isSelected: Bool {
-		model.internalName == store.hexSettings.selectedModel
+		model.internalName == store.dictaFlowSettings.selectedModel
 	}
 
 	var body: some View {
@@ -516,7 +516,7 @@ private struct CuratedRow: View {
 					if isSelected {
 						Image(systemName: "checkmark.circle.fill")
 							.foregroundColor(.green)
-						ModelWarmStatusIndicator(status: store.hexSettings.transcriptionModelWarmStatus)
+						ModelWarmStatusIndicator(status: store.dictaFlowSettings.transcriptionModelWarmStatus)
 					}
 				}
 				.frame(minWidth: 80, alignment: .leading)
@@ -554,7 +554,7 @@ private struct FooterView: View {
 	@Bindable var store: StoreOf<ModelDownloadFeature>
 
 	var body: some View {
-		if store.isDownloading, store.downloadingModelName == store.hexSettings.selectedModel {
+		if store.isDownloading, store.downloadingModelName == store.dictaFlowSettings.selectedModel {
 			VStack(alignment: .leading) {
 				Text("Downloading model...")
 					.font(.caption)
@@ -568,11 +568,11 @@ private struct FooterView: View {
 				// If we can find it in availableModels we use that reference, otherwise we
 				// fall back to the raw `selectedModel` string from settings.
 				HStack(spacing: 4) {
-					let selectedName = store.availableModels.first(where: { $0.name == store.hexSettings.selectedModel })?.name ?? store.hexSettings.selectedModel
+					let selectedName = store.availableModels.first(where: { $0.name == store.dictaFlowSettings.selectedModel })?.name ?? store.dictaFlowSettings.selectedModel
 					if !selectedName.isEmpty {
 						Text("Selected: \(selectedName)")
 							.font(.caption)
-						ModelWarmStatusIndicator(status: store.hexSettings.transcriptionModelWarmStatus)
+						ModelWarmStatusIndicator(status: store.dictaFlowSettings.transcriptionModelWarmStatus)
 					}
 				}
 				Spacer()

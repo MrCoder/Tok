@@ -3,12 +3,12 @@ import Sparkle
 import SwiftUI
 
 @main
-struct HexApp: App {
+struct DictaFlowApp: App {
 	static let appStore = Store(initialState: AppFeature.State()) {
 		AppFeature()
 	}
 
-	@NSApplicationDelegateAdaptor(HexAppDelegate.self) var appDelegate
+	@NSApplicationDelegateAdaptor(DictaFlowAppDelegate.self) var appDelegate
 
 	var body: some Scene {
 		MenuBarExtra {
@@ -28,7 +28,7 @@ struct HexApp: App {
 				// no title text
 				EmptyView()
 			} icon: {
-				WithViewStore(HexApp.appStore, observe: { $0.transcription }) { viewStore in
+				WithViewStore(DictaFlowApp.appStore, observe: { $0.transcription }) { viewStore in
 					PacmanBarIcon(
 						averagePower: viewStore.meter.averagePower,
 						peakPower: viewStore.meter.peakPower,

@@ -2,20 +2,20 @@ import Foundation
 import AppKit
 
 // A lightweight logger that writes important events to a persistent log file inside
-// `~/Library/Logs/Tok/tok.log`. The log file can later be opened from the Developer
+// `~/Library/Logs/DictaFlow/dictaflow.log`. The log file can later be opened from the Developer
 // section of the app.
 //
 // Only the most important, high-level events should be logged through this API to avoid
 // excessive file growth. For verbose diagnostic output keep using `print`.
 
-enum TokLogLevel: String {
+enum DictaFlowLogLevel: String {
     case info  = "INFO"
     case warn  = "WARN"
     case error = "ERROR"
 }
 
-struct TokLogger {
-    private static let queue = DispatchQueue(label: "TokLogger")
+struct DictaFlowLogger {
+    private static let queue = DispatchQueue(label: "DictaFlowLogger")
     private static let isoFormatter: ISO8601DateFormatter = {
         let f = ISO8601DateFormatter()
         f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
@@ -25,7 +25,7 @@ struct TokLogger {
     private static let logsDirectoryURL: URL = {
         let base = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask)[0]
         let dir = base.appendingPathComponent("Logs", isDirectory: true)
-            .appendingPathComponent("Tok", isDirectory: true)
+            .appendingPathComponent("DictaFlow", isDirectory: true)
         // Create directory if needed
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         return dir
@@ -33,11 +33,11 @@ struct TokLogger {
 
     /// URL to the main log file.
     static let logFileURL: URL = {
-        logsDirectoryURL.appendingPathComponent("tok.log", isDirectory: false)
+        logsDirectoryURL.appendingPathComponent("dictaflow.log", isDirectory: false)
     }()
 
     /// Appends a line to the log file. The write is performed off the main thread.
-    static func log(_ message: String, level: TokLogLevel = .info) {
+    static func log(_ message: String, level: DictaFlowLogLevel = .info) {
         let timestamp = isoFormatter.string(from: Date())
         let line = "[\(timestamp)] [\(level.rawValue)] \(message)\n"
 

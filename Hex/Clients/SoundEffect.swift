@@ -64,10 +64,10 @@ public extension DependencyValues {
 
 actor SoundEffectsClientLive {
   
-  @Shared(.hexSettings) var hexSettings: HexSettings
+  @Shared(.dictaFlowSettings) var dictaFlowSettings: DictaFlowSettings
 
   func play(_ soundEffect: SoundEffect) {
-    guard hexSettings.soundEffectsEnabled else { return }
+    guard dictaFlowSettings.soundEffectsEnabled else { return }
     guard let player = audioPlayers[soundEffect] else {
       print("Sound not found: \(soundEffect)")
       return

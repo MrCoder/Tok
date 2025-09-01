@@ -20,7 +20,7 @@ extension SharedReaderKey
 struct SettingsFeature {
   @ObservableState
   struct State {
-    @Shared(.hexSettings) var hexSettings: HexSettings
+    @Shared(.dictaFlowSettings) var dictaFlowSettings: DictaFlowSettings
     @Shared(.isSettingHotKey) var isSettingHotKey: Bool = false
 
     var languages: IdentifiedArrayOf<Language> = []
@@ -189,14 +189,14 @@ struct SettingsFeature {
         state.currentModifiers = keyEvent.modifiers.union(state.currentModifiers)
         let currentModifiers = state.currentModifiers
         if let key = keyEvent.key {
-          state.$hexSettings.withLock {
+          state.$dictaFlowSettings.withLock {
             $0.hotkey.key = key
             $0.hotkey.modifiers = currentModifiers
           }
           state.$isSettingHotKey.withLock { $0 = false }
           state.currentModifiers = []
         } else if keyEvent.modifiers.isEmpty {
-          state.$hexSettings.withLock {
+          state.$dictaFlowSettings.withLock {
             $0.hotkey.key = nil
             $0.hotkey.modifiers = currentModifiers
           }
@@ -206,7 +206,7 @@ struct SettingsFeature {
         return .none
 
       case let .toggleOpenOnLogin(enabled):
-        state.$hexSettings.withLock { $0.openOnLogin = enabled }
+        state.$dictaFlowSettings.withLock { $0.openOnLogin = enabled }
         return .run { _ in
           if enabled {
             try? SMAppService.mainApp.register()
@@ -216,11 +216,11 @@ struct SettingsFeature {
         }
 
       case let .togglePreventSystemSleep(enabled):
-        state.$hexSettings.withLock { $0.preventSystemSleep = enabled }
+        state.$dictaFlowSettings.withLock { $0.preventSystemSleep = enabled }
         return .none
 
       case let .togglePauseMediaOnRecord(enabled):
-        state.$hexSettings.withLock { $0.pauseMediaOnRecord = enabled }
+        state.$dictaFlowSettings.withLock { $0.pauseMediaOnRecord = enabled }
         return .none
 
       // Permissions
@@ -288,8 +288,8 @@ struct SettingsFeature {
 
       // Model Management
       case let .modelDownload(.selectModel(newModel)):
-        // Also store it in hexSettings:
-        state.$hexSettings.withLock {
+        // Also store it in dictaFlowSettings:
+        state.$dictaFlowSettings.withLock {
           $0.selectedModel = newModel
         }
         // Then continue with the child's normal logic:

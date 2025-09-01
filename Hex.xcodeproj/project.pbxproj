@@ -23,7 +23,7 @@
 			containerPortal = 47E05DE62D444EC600D26DA6 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 47E05DED2D444EC600D26DA6;
-			remoteInfo = Hex;
+			remoteInfo = DictaFlow;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -31,7 +31,7 @@
 		473544502D445936001FBCB5 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		473544542D445959001FBCB5 /* Testing.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Testing.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/Testing.framework; sourceTree = DEVELOPER_DIR; };
 		478637A52D48725900319BFA /* HexTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HexTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		47E05DEE2D444EC600D26DA6 /* Tok.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tok.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		47E05DEE2D444EC600D26DA6 /* DictaFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DictaFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A113E1F2E09710D009AF85E /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		B53355FF2D7B8D4900E5F542 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -42,7 +42,7 @@
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 47E05DED2D444EC600D26DA6 /* Tok */;
+			target = 47E05DED2D444EC600D26DA6 /* DictaFlow */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
@@ -111,7 +111,7 @@
 		47E05DEF2D444EC600D26DA6 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				47E05DEE2D444EC600D26DA6 /* Tok.app */,
+				47E05DEE2D444EC600D26DA6 /* DictaFlow.app */,
 				478637A52D48725900319BFA /* HexTests.xctest */,
 			);
 			name = Products;
@@ -151,7 +151,7 @@
 			productReference = 478637A52D48725900319BFA /* HexTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		47E05DED2D444EC600D26DA6 /* Tok */ = {
+		47E05DED2D444EC600D26DA6 /* DictaFlow */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 47E05DFD2D444EC700D26DA6 /* Build configuration list for PBXNativeTarget "Tok" */;
 			buildPhases = (
@@ -166,7 +166,7 @@
 			fileSystemSynchronizedGroups = (
 				47E05DF02D444EC600D26DA6 /* Hex */,
 			);
-			name = Tok;
+			name = DictaFlow;
 			packageProductDependencies = (
 				47E05E012D444EE900D26DA6 /* ComposableArchitecture */,
 				47E05E042D444EF800D26DA6 /* Sauce */,
@@ -176,8 +176,8 @@
 				4765045D2D45900200C7EA60 /* Pow */,
 				5AFD146F2E0A2506009909E5 /* Sparkle */,
 			);
-			productName = Tok;
-			productReference = 47E05DEE2D444EC600D26DA6 /* Tok.app */;
+			productName = DictaFlow;
+			productReference = 47E05DEE2D444EC600D26DA6 /* DictaFlow.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -199,7 +199,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 47E05DE92D444EC600D26DA6 /* Build configuration list for PBXProject "Hex" */;
+			buildConfigurationList = 47E05DE92D444EC600D26DA6 /* Build configuration list for PBXProject "DictaFlow" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -221,7 +221,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				47E05DED2D444EC600D26DA6 /* Tok */,
+				47E05DED2D444EC600D26DA6 /* DictaFlow */,
 				478637A42D48725900319BFA /* HexTests */,
 			);
 		};
@@ -265,7 +265,7 @@
 /* Begin PBXTargetDependency section */
 		478637AA2D48725900319BFA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 47E05DED2D444EC600D26DA6 /* Tok */;
+			target = 47E05DED2D444EC600D26DA6 /* DictaFlow */;
 			targetProxy = 478637A92D48725900319BFA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -281,11 +281,11 @@
 				DEVELOPMENT_TEAM = QC99C9JE59;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 0.2.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kitlangton.HexTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.dictaflow.DictaFlowTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hex.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Hex";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DictaFlow.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DictaFlow";
 			};
 			name = Debug;
 		};
@@ -299,11 +299,11 @@
 				DEVELOPMENT_TEAM = QC99C9JE59;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 0.2.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.kitlangton.HexTests;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.dictaflow.DictaFlowTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Hex.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Hex";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DictaFlow.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/DictaFlow";
 			};
 			name = Release;
 		};
@@ -445,10 +445,10 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Hex/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Tok;
-				INFOPLIST_KEY_NSAppleEventsUsageDescription = "Hex needs to control keyboard events to simulate paste operations.";
+				INFOPLIST_KEY_CFBundleDisplayName = DictaFlow;
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "DictaFlow needs to control keyboard events to simulate paste operations.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Hex needs microphone access in order to transcribe your voice.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "DictaFlow needs microphone access in order to transcribe your voice.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -456,7 +456,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 0.2.1;
 				OTHER_LDFLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = xyz.2qs.Tok;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.dictaflow.DictaFlow;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -481,17 +481,17 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Hex/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = Tok;
-				INFOPLIST_KEY_NSAppleEventsUsageDescription = "Hex needs to control keyboard events to simulate paste operations.";
+				INFOPLIST_KEY_CFBundleDisplayName = DictaFlow;
+				INFOPLIST_KEY_NSAppleEventsUsageDescription = "DictaFlow needs to control keyboard events to simulate paste operations.";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Hex needs microphone access in order to transcribe your voice.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "DictaFlow needs microphone access in order to transcribe your voice.";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 15.0;
 				MARKETING_VERSION = 0.2.1;
-				PRODUCT_BUNDLE_IDENTIFIER = xyz.2qs.Tok;
+				PRODUCT_BUNDLE_IDENTIFIER = ai.dictaflow.DictaFlow;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -510,7 +510,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		47E05DE92D444EC600D26DA6 /* Build configuration list for PBXProject "Hex" */ = {
+		47E05DE92D444EC600D26DA6 /* Build configuration list for PBXProject "DictaFlow" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				47E05DFB2D444EC700D26DA6 /* Debug */,
@@ -519,7 +519,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		47E05DFD2D444EC700D26DA6 /* Build configuration list for PBXNativeTarget "Tok" */ = {
+		47E05DFD2D444EC700D26DA6 /* Build configuration list for PBXNativeTarget "DictaFlow" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				47E05DFE2D444EC700D26DA6 /* Debug */,

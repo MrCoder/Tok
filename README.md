@@ -1,8 +1,20 @@
-# Tok — Type with Voice
+# DictaFlow.ai — AI-Powered Voice to Text
 
-Press-and-hold a hotkey to transcribe your voice and paste the result wherever you're typing.
+Press-and-hold a hotkey to transcribe your voice with AI and paste the result wherever you're typing.
 
-A Fork of https://github.com/kitlangton/Hex
+**DictaFlow.ai** transforms your voice into text using advanced AI transcription, with intelligent enhancement and multi-language support for seamless dictation workflows.
 
-I've opened-sourced the project in the hopes that others will find it useful! We rely on the awesome [WhisperKit](https://github.com/argmaxinc/WhisperKit) for transcription, and the incredible [Swift Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture) for structuring the app. Please open issues with any questions or feedback! ❤️
+Originally forked from https://github.com/kitlangton/Hex
+
+## Features
+- **AI-Powered Transcription**: Leverages [WhisperKit](https://github.com/argmaxinc/WhisperKit) for accurate voice recognition
+- **Smart Enhancement**: AI-powered text improvement and formatting
+- **Multi-Language Support**: Including Chinese variants (Simplified/Traditional)
+- **Screen Context**: Intelligent screen capture for contextual transcription
+- **Hotkey Control**: Customizable press-and-hold activation
+- **Privacy-First**: Local processing with optional cloud enhancement
+
+Built with the [Swift Composable Architecture](https://github.com/pointfreeco/swift-composable-architecture) for robust, maintainable code. 
+
+Visit us at **[dictaflow.ai](https://dictaflow.ai)** | Please open issues with any questions or feedback! ❤️
 

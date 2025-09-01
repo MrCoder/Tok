@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - DictaFlow.ai</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <a href="/" class="nav-logo">
+                    <img src="images/logo-horizontal.svg" alt="DictaFlow.ai" class="logo-img">
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="/#features" class="nav-link">Features</a></li>
+                    <li><a href="/#how-it-works" class="nav-link">How It Works</a></li>
+                    <li><a href="/#download" class="nav-link">Download</a></li>
+                    <li><a href="/privacy.html" class="nav-link">Privacy</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="error-page">
+        <div class="container">
+            <div class="error-content">
+                <div class="error-visual">
+                    <div class="error-icon">🎤</div>
+                    <div class="error-waves">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <h1 class="error-title">Page Not Found</h1>
+                <p class="error-description">
+                    Oops! The page you're looking for doesn't exist. 
+                    It might have been moved, deleted, or you entered the wrong URL.
+                </p>
+                <div class="error-actions">
+                    <a href="/" class="btn btn-primary">
+                        <span>Go Home</span>
+                        <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                        </svg>
+                    </a>
+                    <a href="/#download" class="btn btn-secondary">
+                        <span>Download App</span>
+                        <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="error-links">
+                    <p>Looking for something specific?</p>
+                    <ul>
+                        <li><a href="/#features">Features & Capabilities</a></li>
+                        <li><a href="/privacy.html">Privacy Policy</a></li>
+                        <li><a href="https://github.com/dictaflow/dictaflow">Source Code</a></li>
+                        <li><a href="https://github.com/dictaflow/dictaflow/issues">Report Issues</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: calc(80px + var(--space-8)) 0 var(--space-8);
+        }
+
+        .error-content {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .error-visual {
+            margin-bottom: var(--space-12);
+        }
+
+        .error-icon {
+            font-size: 120px;
+            margin-bottom: var(--space-4);
+            opacity: 0.5;
+        }
+
+        .error-waves {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-2);
+        }
+
+        .error-waves span {
+            width: 6px;
+            height: 30px;
+            background: var(--primary-color);
+            border-radius: 3px;
+            animation: error-wave 2s ease-in-out infinite;
+            opacity: 0.3;
+        }
+
+        .error-waves span:nth-child(2) { animation-delay: 0.2s; }
+        .error-waves span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes error-wave {
+            0%, 100% { height: 30px; opacity: 0.3; }
+            50% { height: 50px; opacity: 0.8; }
+        }
+
+        .error-title {
+            font-size: var(--font-size-5xl);
+            font-weight: 700;
+            margin-bottom: var(--space-6);
+            color: var(--text-primary);
+        }
+
+        .error-description {
+            font-size: var(--font-size-lg);
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: var(--space-8);
+        }
+
+        .error-actions {
+            display: flex;
+            gap: var(--space-4);
+            justify-content: center;
+            margin-bottom: var(--space-12);
+            flex-wrap: wrap;
+        }
+
+        .error-links {
+            background: var(--background-alt);
+            border-radius: var(--radius-lg);
+            padding: var(--space-8);
+        }
+
+        .error-links p {
+            color: var(--text-secondary);
+            margin-bottom: var(--space-4);
+            font-weight: 600;
+        }
+
+        .error-links ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--space-3);
+        }
+
+        .error-links a {
+            color: var(--primary-color);
+            text-decoration: none;
+            padding: var(--space-2);
+            border-radius: var(--radius-base);
+            transition: all 0.3s ease;
+        }
+
+        .error-links a:hover {
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .error-title {
+                font-size: var(--font-size-4xl);
+            }
+            
+            .error-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .error-links ul {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

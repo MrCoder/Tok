@@ -16,7 +16,7 @@ struct AboutView: View {
                             versionTapCount += 1
                             if versionTapCount >= 8 {
                                 // Enable developer mode
-                                store.send(.binding(.set(\.hexSettings.developerModeEnabled, true)))
+                                store.send(.binding(.set(\.dictaFlowSettings.developerModeEnabled, true)))
                                 versionTapCount = 0
                             }
                         }
@@ -28,7 +28,7 @@ struct AboutView: View {
                     .buttonStyle(.bordered)
                 }
                 HStack {
-                    Label("Tok is open source", systemImage: "apple.terminal.on.rectangle")
+                    Label("DictaFlow is open source", systemImage: "apple.terminal.on.rectangle")
                     Spacer()
                     Link("Visit our GitHub", destination: URL(string: "https://github.com/untsop/Hex")!)
                 }

@@ -64,7 +64,7 @@ struct SettingsView: View {
 					// Input device picker
 					HStack {
 						Label {
-							Picker("Input Device", selection: $store.hexSettings.selectedMicrophoneID) {
+							Picker("Input Device", selection: $store.dictaFlowSettings.selectedMicrophoneID) {
 								Text("System Default").tag(nil as String?)
 								ForEach(store.availableInputDevices) { device in
 									Text(device.name).tag(device.id as String?)
@@ -86,7 +86,7 @@ struct SettingsView: View {
 					}
 					
 					// Show fallback note for selected device not connected
-					if let selectedID = store.hexSettings.selectedMicrophoneID, 
+					if let selectedID = store.dictaFlowSettings.selectedMicrophoneID, 
 					   !store.availableInputDevices.contains(where: { $0.id == selectedID }) {
 						Text("Selected device not connected. System default will be used.")
 							.font(.caption)
@@ -104,7 +104,7 @@ struct SettingsView: View {
 			}
 
 			Label {
-				Picker("Output Language", selection: $store.hexSettings.outputLanguage) {
+				Picker("Output Language", selection: $store.dictaFlowSettings.outputLanguage) {
 					ForEach(store.languages, id: \.id) { language in
 						Text(language.name).tag(language.code)
 					}
@@ -116,7 +116,7 @@ struct SettingsView: View {
 
 			// --- Hot Key Section ---
 			Section("Hot Key") {
-				let hotKey = store.hexSettings.hotkey
+				let hotKey = store.dictaFlowSettings.hotkey
 				let key = store.isSettingHotKey ? nil : hotKey.key
 				let modifiers = store.isSettingHotKey ? store.currentModifiers : hotKey.modifiers
 				
@@ -146,7 +146,7 @@ struct SettingsView: View {
 				// Double-tap toggle (for key+modifier combinations)
 				if hotKey.key != nil {
 					Label {
-						Toggle("Use double-tap only", isOn: $store.hexSettings.useDoubleTapOnly)
+						Toggle("Use double-tap only", isOn: $store.dictaFlowSettings.useDoubleTapOnly)
 						Text("Recommended for custom hotkeys to avoid interfering with normal usage")
 							.font(.caption)
 							.foregroundColor(.secondary)
@@ -156,10 +156,10 @@ struct SettingsView: View {
 				}
 				
 				// Minimum key time (for modifier-only shortcuts)
-                if store.hexSettings.hotkey.key == nil {
+                if store.dictaFlowSettings.hotkey.key == nil {
                     Label {
-                        Slider(value: $store.hexSettings.minimumKeyTime, in: 0.0...2.0, step: 0.1) {
-                            Text("Ignore below \(store.hexSettings.minimumKeyTime, specifier: "%.1f")s")
+                        Slider(value: $store.dictaFlowSettings.minimumKeyTime, in: 0.0...2.0, step: 0.1) {
+                            Text("Ignore below \(store.dictaFlowSettings.minimumKeyTime, specifier: "%.1f")s")
                         }
                     } icon: {
                         Image(systemName: "clock")
@@ -170,7 +170,7 @@ struct SettingsView: View {
 			// --- Sound Section ---
 			Section {
 				Label {
-					Toggle("Sound Effects", isOn: $store.hexSettings.soundEffectsEnabled)
+					Toggle("Sound Effects", isOn: $store.dictaFlowSettings.soundEffectsEnabled)
 				} icon: {
 					Image(systemName: "speaker.wave.2.fill")
 				}
@@ -183,7 +183,7 @@ struct SettingsView: View {
 				Label {
 					Toggle("Open on Login",
 					       isOn: Binding(
-					       	get: { store.hexSettings.openOnLogin },
+					       	get: { store.dictaFlowSettings.openOnLogin },
 					       	set: { store.send(.toggleOpenOnLogin($0)) }
 					       ))
 				} icon: {
@@ -191,27 +191,27 @@ struct SettingsView: View {
 				}
 
 				Label {
-					Toggle("Show Dock Icon", isOn: $store.hexSettings.showDockIcon)
+					Toggle("Show Dock Icon", isOn: $store.dictaFlowSettings.showDockIcon)
 				} icon: {
 					Image(systemName: "dock.rectangle")
 				}
 
 				Label {
-					Toggle("Use clipboard to insert", isOn: $store.hexSettings.useClipboardPaste)
+					Toggle("Use clipboard to insert", isOn: $store.dictaFlowSettings.useClipboardPaste)
 					Text("Use clipboard to insert text. Fast but may not restore all clipboard content.\nTurn off to use simulated keypresses. Slower, but doesn't need to restore clipboard")
 				} icon: {
 					Image(systemName: "doc.on.doc.fill")
 				}
 				
 				Label {
-					Toggle("Copy to clipboard", isOn: $store.hexSettings.copyToClipboard)
+					Toggle("Copy to clipboard", isOn: $store.dictaFlowSettings.copyToClipboard)
 					Text("Copy transcription text to clipboard in addition to pasting it")
 				} icon: {
 					Image(systemName: "doc.on.clipboard")
 				}
                 
                 Label {
-                    Toggle("Disable auto-capitalization", isOn: $store.hexSettings.disableAutoCapitalization)
+                    Toggle("Disable auto-capitalization", isOn: $store.dictaFlowSettings.disableAutoCapitalization)
                     Text("Disable automatic capitalization in transcriptions")
                 } icon: {
                     Image(systemName: "textformat.abc")
@@ -221,7 +221,7 @@ struct SettingsView: View {
 					Toggle(
 						"Prevent System Sleep while Recording",
 						isOn: Binding(
-							get: { store.hexSettings.preventSystemSleep },
+							get: { store.dictaFlowSettings.preventSystemSleep },
 							set: { store.send(.togglePreventSystemSleep($0)) }
 						))
 				} icon: {
@@ -232,7 +232,7 @@ struct SettingsView: View {
                     Toggle(
                         "Pause Media while Recording",
                         isOn: Binding(
-                            get: { store.hexSettings.pauseMediaOnRecord },
+                            get: { store.dictaFlowSettings.pauseMediaOnRecord },
                             set: { store.send(.togglePauseMediaOnRecord($0)) }
                         ))
                 } icon: {

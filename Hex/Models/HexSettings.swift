@@ -10,7 +10,7 @@ enum ModelWarmStatus: String, Codable, Equatable {
 }
 
 // To add a new setting, add a new property to the struct, the CodingKeys enum, and the custom decoder
-struct HexSettings: Codable, Equatable {
+struct DictaFlowSettings: Codable, Equatable {
 	var soundEffectsEnabled: Bool = true
 	var hotkey: HotKey = .init(key: nil, modifiers: [.option])
 	var openOnLogin: Bool = false
@@ -236,12 +236,12 @@ enum AIProviderType: String, Codable, CaseIterable, Equatable {
     }
 }
 
-// Cache for HexSettings to reduce disk I/O
-private var cachedSettings: HexSettings? = nil
+// Cache for DictaFlowSettings to reduce disk I/O
+private var cachedSettings: DictaFlowSettings? = nil
 private var lastSettingsLoadTime: Date = .distantPast
 
 // Helper function to get cached settings or load from disk
-func getCachedSettings() -> HexSettings {
+func getCachedSettings() -> DictaFlowSettings {
     // Use cached settings if they exist and are recent (within last 5 seconds)
     if let cached = cachedSettings, 
        Date().timeIntervalSince(lastSettingsLoadTime) < 5.0 {
@@ -250,10 +250,10 @@ func getCachedSettings() -> HexSettings {
     
     // Otherwise read from disk
     do {
-        let url = URL.documentsDirectory.appending(component: "hex_settings.json")
+        let url = URL.documentsDirectory.appending(component: "dictaflow_settings.json")
         if FileManager.default.fileExists(atPath: url.path) {
             let data = try Data(contentsOf: url)
-            let settings = try JSONDecoder().decode(HexSettings.self, from: data)
+            let settings = try JSONDecoder().decode(DictaFlowSettings.self, from: data)
             
             // Update cache
             cachedSettings = settings
@@ -266,18 +266,18 @@ func getCachedSettings() -> HexSettings {
     }
     
     // On error or if file doesn't exist, return default settings
-    let defaultSettings = HexSettings()
+    let defaultSettings = DictaFlowSettings()
     cachedSettings = defaultSettings
     lastSettingsLoadTime = Date()
     return defaultSettings
 }
 
 extension SharedReaderKey
-	where Self == FileStorageKey<HexSettings>.Default
+	where Self == FileStorageKey<DictaFlowSettings>.Default
 {
-	static var hexSettings: Self {
+	static var dictaFlowSettings: Self {
 		Self[
-			.fileStorage(URL.documentsDirectory.appending(component: "hex_settings.json")),
+			.fileStorage(URL.documentsDirectory.appending(component: "dictaflow_settings.json")),
 			default: getCachedSettings()
 		]
 	}

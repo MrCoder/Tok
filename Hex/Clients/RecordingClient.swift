@@ -281,7 +281,7 @@ actor RecordingClientLive {
   /// Tracks the current recording state to prevent overlapping operations
   private var isRecording: Bool = false
     
-  @Shared(.hexSettings) var hexSettings: HexSettings
+  @Shared(.dictaFlowSettings) var dictaFlowSettings: DictaFlowSettings
 
   /// Tracks whether media was paused using the media key when recording started.
   private var didPauseMedia: Bool = false
@@ -536,7 +536,7 @@ actor RecordingClientLive {
     isRecording = true
 
     // If audio is playing on the default output, pause it.
-    if hexSettings.pauseMediaOnRecord {
+    if dictaFlowSettings.pauseMediaOnRecord {
       let mediaPauseStart = Date()
       print("🎙️ [TIMING] Starting media pause check at: \(mediaPauseStart.timeIntervalSince1970)")
 
@@ -565,7 +565,7 @@ actor RecordingClientLive {
     let deviceSetupStart = Date()
     print("🎙️ [TIMING] Starting device setup at: \(deviceSetupStart.timeIntervalSince1970)")
 
-    if let selectedDeviceIDString = hexSettings.selectedMicrophoneID,
+    if let selectedDeviceIDString = dictaFlowSettings.selectedMicrophoneID,
        let selectedDeviceID = AudioDeviceID(selectedDeviceIDString) {
       // Check if the selected device is still available
       let devices = getAllAudioDevices()
@@ -637,7 +637,7 @@ actor RecordingClientLive {
       print("Recording started.")
 
       // Pause any playing media *after* the microphone is already recording to avoid delaying capture startup.
-      if hexSettings.pauseMediaOnRecord {
+      if dictaFlowSettings.pauseMediaOnRecord {
         let mediaPauseStart = Date()
         print("🎙️ [TIMING] Starting media pause check (post-record start) at: \(mediaPauseStart.timeIntervalSince1970)")
 

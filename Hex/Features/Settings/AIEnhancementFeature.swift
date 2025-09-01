@@ -13,7 +13,7 @@ import SwiftUI
 struct AIEnhancementFeature {
     @ObservableState
     struct State: Equatable {
-        @Shared(.hexSettings) var hexSettings: HexSettings
+        @Shared(.dictaFlowSettings) var dictaFlowSettings: DictaFlowSettings
         
         var isOllamaAvailable: Bool = false
         var availableModels: [String] = []
@@ -41,25 +41,25 @@ struct AIEnhancementFeature {
         
         // Current provider type
         var currentProvider: AIProviderType {
-            hexSettings.aiProviderType
+            dictaFlowSettings.aiProviderType
         }
 
         // Current selected models
         var currentSelectedModel: String {
             switch currentProvider {
             case .ollama:
-                return hexSettings.selectedAIModel
+                return dictaFlowSettings.selectedAIModel
             case .groq:
-                return hexSettings.selectedRemoteModel
+                return dictaFlowSettings.selectedRemoteModel
             }
         }
 
         var currentSelectedImageModel: String {
             switch currentProvider {
             case .ollama:
-                return hexSettings.selectedImageModel
+                return dictaFlowSettings.selectedImageModel
             case .groq:
-                return hexSettings.selectedRemoteImageModel
+                return dictaFlowSettings.selectedRemoteImageModel
             }
         }
 
@@ -69,7 +69,7 @@ struct AIEnhancementFeature {
             case .ollama:
                 return ""
             case .groq:
-                return hexSettings.groqAPIKey
+                return dictaFlowSettings.groqAPIKey
             }
         }
     }
@@ -155,12 +155,12 @@ struct AIEnhancementFeature {
                 state.availableModels = models
                 
                 // If the selected model is not in the list and we have models, select the first one
-                if !models.isEmpty && !models.contains(state.hexSettings.selectedAIModel) {
+                if !models.isEmpty && !models.contains(state.dictaFlowSettings.selectedAIModel) {
                     // Check if the default model is available
                     if models.contains(state.defaultAIModel) {
-                        state.$hexSettings.withLock { $0.selectedAIModel = state.defaultAIModel }
+                        state.$dictaFlowSettings.withLock { $0.selectedAIModel = state.defaultAIModel }
                     } else {
-                        state.$hexSettings.withLock { $0.selectedAIModel = models[0] }
+                        state.$dictaFlowSettings.withLock { $0.selectedAIModel = models[0] }
                     }
                 }
                 
@@ -172,20 +172,20 @@ struct AIEnhancementFeature {
                 return .none
                 
             case let .setSelectedModel(model):
-                state.$hexSettings.withLock { $0.selectedAIModel = model }
+                state.$dictaFlowSettings.withLock { $0.selectedAIModel = model }
                 return .none
                 
             case .resetToDefaultPrompt:
-                state.$hexSettings.withLock { $0.aiEnhancementPrompt = EnhancementOptions.defaultPrompt }
+                state.$dictaFlowSettings.withLock { $0.aiEnhancementPrompt = EnhancementOptions.defaultPrompt }
                 return .none
                 
             case .resetToDefaultImagePrompt:
-                state.$hexSettings.withLock { $0.imageAnalysisPrompt = defaultImageAnalysisPrompt }
+                state.$dictaFlowSettings.withLock { $0.imageAnalysisPrompt = defaultImageAnalysisPrompt }
                 return .none
                 
             // Remote provider actions
             case let .setProviderType(providerType):
-                state.$hexSettings.withLock { $0.aiProviderType = providerType }
+                state.$dictaFlowSettings.withLock { $0.aiProviderType = providerType }
                 state.errorMessage = nil
                 state.connectionStatus = nil
                 
@@ -213,7 +213,7 @@ struct AIEnhancementFeature {
                 case .ollama:
                     break // Ollama doesn't use API keys
                 case .groq:
-                    state.$hexSettings.withLock { $0.groqAPIKey = apiKey }
+                    state.$dictaFlowSettings.withLock { $0.groqAPIKey = apiKey }
                 }
                 return .none
                 
@@ -265,7 +265,7 @@ struct AIEnhancementFeature {
                         // Try to find a default model or use the first one
                         let defaultModel = models.first { $0.id.contains("compound-beta-mini") } ?? models.first
                         if let model = defaultModel {
-                            state.$hexSettings.withLock { $0.selectedRemoteModel = model.id }
+                            state.$dictaFlowSettings.withLock { $0.selectedRemoteModel = model.id }
                         }
                     }
                 }
@@ -273,7 +273,7 @@ struct AIEnhancementFeature {
                 return .none
                 
             case let .setSelectedRemoteModel(modelId):
-                state.$hexSettings.withLock { $0.selectedRemoteModel = modelId }
+                state.$dictaFlowSettings.withLock { $0.selectedRemoteModel = modelId }
                 return .none
 
             // Image model actions
@@ -302,12 +302,12 @@ struct AIEnhancementFeature {
                 state.availableImageModels = models
 
                 // If the selected image model is not in the list and we have models, select the first one
-                if !models.isEmpty && !models.contains(state.hexSettings.selectedImageModel) {
+                if !models.isEmpty && !models.contains(state.dictaFlowSettings.selectedImageModel) {
                     // Check if the default image model is available
                     if models.contains(state.defaultImageModel) {
-                        state.$hexSettings.withLock { $0.selectedImageModel = state.defaultImageModel }
+                        state.$dictaFlowSettings.withLock { $0.selectedImageModel = state.defaultImageModel }
                     } else {
-                        state.$hexSettings.withLock { $0.selectedImageModel = models[0] }
+                        state.$dictaFlowSettings.withLock { $0.selectedImageModel = models[0] }
                     }
                 }
 
@@ -319,7 +319,7 @@ struct AIEnhancementFeature {
                 return .none
 
             case let .setSelectedImageModel(model):
-                state.$hexSettings.withLock { $0.selectedImageModel = model }
+                state.$dictaFlowSettings.withLock { $0.selectedImageModel = model }
                 return .none
 
             case .loadRemoteImageModels:
@@ -354,7 +354,7 @@ struct AIEnhancementFeature {
                         // Try to find a default model or use the first one
                         let defaultModel = models.first { $0.id.contains("llama-4") } ?? models.first
                         if let model = defaultModel {
-                            state.$hexSettings.withLock { $0.selectedRemoteImageModel = model.id }
+                            state.$dictaFlowSettings.withLock { $0.selectedRemoteImageModel = model.id }
                         }
                     }
                 }
@@ -362,7 +362,7 @@ struct AIEnhancementFeature {
                 return .none
 
             case let .setSelectedRemoteImageModel(modelId):
-                state.$hexSettings.withLock { $0.selectedRemoteImageModel = modelId }
+                state.$dictaFlowSettings.withLock { $0.selectedRemoteImageModel = modelId }
                 return .none
             }
         }

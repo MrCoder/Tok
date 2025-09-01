@@ -73,7 +73,7 @@ struct HistoryFeature {
 		var playingTranscriptID: UUID?
 		var audioPlayer: AVAudioPlayer?
 		var audioPlayerController: AudioPlayerController?
-		@Shared(.hexSettings) var hexSettings: HexSettings
+		@Shared(.dictaFlowSettings) var dictaFlowSettings: DictaFlowSettings
 	}
 
 	enum Action {
@@ -207,9 +207,9 @@ struct HistoryFeature {
 					return .none
 				}
 
-				let model = state.hexSettings.selectedModel
-				let language = state.hexSettings.outputLanguage
-				let settings = state.hexSettings
+				let model = state.dictaFlowSettings.selectedModel
+				let language = state.dictaFlowSettings.outputLanguage
+				let settings = state.dictaFlowSettings
 				let transcriptionHistory = state.$transcriptionHistory
 
 				return .run { _ in

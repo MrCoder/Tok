@@ -200,7 +200,7 @@ class AIEnhancementClientLive {
                 // Ensure progress shows as completed even though we skipped
                 progress.completedUnitCount = 100
                 progressCallback(progress)
-                TokLogger.log("AI Enhancement skipped due to network error – returning original text.")
+                DictaFlowLogger.log("AI Enhancement skipped due to network error – returning original text.")
                 return text
             case .ollama:
                 throw error
@@ -336,7 +336,7 @@ class AIEnhancementClientLive {
         ]
         
         // Log the prompt that will be sent to the AI service
-        TokLogger.log("AI Enhancement prompt (model \(model)): \n\(fullPrompt)")
+        DictaFlowLogger.log("AI Enhancement prompt (model \(model)): \n\(fullPrompt)")
         
         print("[AIEnhancementClientLive] Preparing request to Ollama with model: \(model), temp: \(temperature), max_tokens: \(maxTokens)")
         
@@ -406,7 +406,7 @@ class AIEnhancementClientLive {
                 
                 // Clean up the response - trim whitespace, remove thinking tags, and ensure it's not empty
                 let cleanedText = cleanThinkingTags(from: enhancedText).trimmingCharacters(in: .whitespacesAndNewlines)
-                TokLogger.log("AI Enhancement result: \(cleanedText)")
+                DictaFlowLogger.log("AI Enhancement result: \(cleanedText)")
                 return cleanedText.isEmpty ? text : cleanedText
             } else {
                 print("[AIEnhancementClientLive] Error: Failed to parse Ollama response")
@@ -756,7 +756,7 @@ class AIEnhancementClientLive {
                     progressCallback(progress)
                     print("[AIEnhancementClient] Analysis complete. Summary length: \(summary.count) chars")
                     // Record the image recognition result in the persistent Tok log so users can review it later.
-                    TokLogger.log("Image recognition result: \(summary)")
+                    DictaFlowLogger.log("Image recognition result: \(summary)")
                     return summary.trimmingCharacters(in: .whitespacesAndNewlines)
                 } else {
                     throw NSError(domain: "AIEnhancementClient", code: -2, userInfo: [NSLocalizedDescriptionKey: "Unable to parse Ollama response"])
@@ -851,7 +851,7 @@ class AIEnhancementClientLive {
                 progressCallback(progress)
                 print("[AIEnhancementClient] Groq vision analysis complete. Summary length: \(content.count) chars")
                 // Record the image recognition result in the persistent Tok log so users can review it later.
-                TokLogger.log("Image recognition result: \(content)")
+                DictaFlowLogger.log("Image recognition result: \(content)")
                 return cleanThinkingTags(from: content).trimmingCharacters(in: .whitespacesAndNewlines)
 
             } catch {

@@ -6,7 +6,7 @@ import AppKit
 struct DeveloperFeature {
     @ObservableState
     struct State {
-        @Shared(.hexSettings) var hexSettings: HexSettings
+        @Shared(.dictaFlowSettings) var dictaFlowSettings: DictaFlowSettings
     }
 
     enum Action {
@@ -18,12 +18,12 @@ struct DeveloperFeature {
         Reduce { state, action in
             switch action {
             case .resetOnboarding:
-                state.$hexSettings.withLock { $0.hasCompletedOnboarding = false }
+                state.$dictaFlowSettings.withLock { $0.hasCompletedOnboarding = false }
                 return .none
 
             case .openLogFile:
                 return .run { _ in
-                    TokLogger.openLogFile()
+                    DictaFlowLogger.openLogFile()
                 }
             }
         }
@@ -50,7 +50,7 @@ struct DeveloperView: View {
                     store.send(.openLogFile)
                 }
                 .buttonStyle(.bordered)
-                let path = TokLogger.logFileURL.path
+                let path = DictaFlowLogger.logFileURL.path
                 Text(path)
                     .font(.caption2)
                     .foregroundColor(.secondary)

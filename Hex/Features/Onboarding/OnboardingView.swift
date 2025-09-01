@@ -145,7 +145,7 @@ struct OnboardingView: View {
               Image(systemName: "mic")
               Text(device.name)
               Spacer()
-              if store.hexSettings.selectedMicrophoneID == device.id {
+              if store.dictaFlowSettings.selectedMicrophoneID == device.id {
                 Image(systemName: "checkmark.circle.fill")
                   .foregroundColor(.green)
               }
@@ -154,7 +154,7 @@ struct OnboardingView: View {
             .background(Color.gray.opacity(0.1))
             .cornerRadius(8)
             .onTapGesture {
-              store.hexSettings.selectedMicrophoneID = device.id
+              store.dictaFlowSettings.selectedMicrophoneID = device.id
             }
           }
         }
@@ -244,12 +244,12 @@ struct OnboardingView: View {
         store.send(.hotkeySet(hotkey))
       }
       
-      if store.hexSettings.hotkey.key != nil {
+      if store.dictaFlowSettings.hotkey.key != nil {
         VStack(spacing: 12) {
           Text("Current Hotkey:")
             .font(.headline)
           
-          Text(hotkeyDescription(hotkey: store.hexSettings.hotkey))
+          Text(hotkeyDescription(hotkey: store.dictaFlowSettings.hotkey))
             .font(.title2)
             .fontWeight(.semibold)
             .padding(12)
@@ -301,13 +301,13 @@ struct OnboardingView: View {
   private var canContinue: Bool {
     switch store.currentStep {
     case .modelSelection:
-      return store.hexSettings.transcriptionModelWarmStatus == .warm
+      return store.dictaFlowSettings.transcriptionModelWarmStatus == .warm
     case .microphone:
       return store.microphonePermission == .granted
     case .accessibility:
       return store.accessibilityPermission == .granted
     case .hotkey:
-      return store.hexSettings.hotkey.key != nil
+      return store.dictaFlowSettings.hotkey.key != nil
     default:
       return true
     }

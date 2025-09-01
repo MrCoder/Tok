@@ -29,7 +29,7 @@ struct AIEnhancementView: View {
             }
             
             // Only show other settings if AI enhancement is enabled
-            if store.hexSettings.useAIEnhancement {
+            if store.dictaFlowSettings.useAIEnhancement {
                 // Provider Selection Section
                 providerSelectionSection
                 
@@ -50,7 +50,7 @@ struct AIEnhancementView: View {
                 screenCaptureSection
 
                 // Image Recognition Model Selection Section (only show if screen capture is enabled)
-                if store.hexSettings.enableScreenCapture {
+                if store.dictaFlowSettings.enableScreenCapture {
                     imageModelSelectionSection
                     
                     // Image Analysis Prompt Section (only show if screen capture is enabled)
@@ -327,9 +327,9 @@ struct AIEnhancementView: View {
         VStack(spacing: 8) {
             // Main toggle row
             Toggle(isOn: Binding(
-                get: { store.hexSettings.useAIEnhancement },
+                get: { store.dictaFlowSettings.useAIEnhancement },
                 set: { newValue in 
-                    store.$hexSettings.withLock { $0.useAIEnhancement = newValue }
+                    store.$dictaFlowSettings.withLock { $0.useAIEnhancement = newValue }
                     
                     // When enabling, check Ollama status
                     if newValue {
@@ -344,7 +344,7 @@ struct AIEnhancementView: View {
             }
             
             // Connection status indicator (only show if AI enhancement is enabled and Ollama is available)
-            if store.hexSettings.useAIEnhancement && store.isOllamaAvailable {
+            if store.dictaFlowSettings.useAIEnhancement && store.isOllamaAvailable {
                 HStack(spacing: 4) {
                     Circle()
                         .fill(Color.green)
@@ -450,7 +450,7 @@ struct AIEnhancementView: View {
                         switch store.currentProvider {
                         case .ollama:
                             Picker("", selection: Binding(
-                                get: { store.hexSettings.selectedAIModel },
+                                get: { store.dictaFlowSettings.selectedAIModel },
                                 set: { store.send(.setSelectedModel($0)) }
                             )) {
                                 ForEach(store.availableModels, id: \.self) { model in
@@ -464,7 +464,7 @@ struct AIEnhancementView: View {
                             
                         case .groq:
                             Picker("", selection: Binding(
-                                get: { store.hexSettings.selectedRemoteModel },
+                                get: { store.dictaFlowSettings.selectedRemoteModel },
                                 set: { store.send(.setSelectedRemoteModel($0)) }
                             )) {
                                 ForEach(store.availableRemoteModels) { model in
@@ -588,7 +588,7 @@ struct AIEnhancementView: View {
                         switch store.currentProvider {
                         case .ollama:
                             Picker("", selection: Binding(
-                                get: { store.hexSettings.selectedImageModel },
+                                get: { store.dictaFlowSettings.selectedImageModel },
                                 set: { store.send(.setSelectedImageModel($0)) }
                             )) {
                                 ForEach(store.availableImageModels, id: \.self) { model in
@@ -602,7 +602,7 @@ struct AIEnhancementView: View {
 
                         case .groq:
                             Picker("", selection: Binding(
-                                get: { store.hexSettings.selectedRemoteImageModel },
+                                get: { store.dictaFlowSettings.selectedRemoteImageModel },
                                 set: { store.send(.setSelectedRemoteImageModel($0)) }
                             )) {
                                 ForEach(store.availableRemoteImageModels) { model in
@@ -645,7 +645,7 @@ struct AIEnhancementView: View {
                 
                 Spacer()
                 
-                Text("\(store.hexSettings.aiEnhancementTemperature, specifier: "%.2f")")
+                Text("\(store.dictaFlowSettings.aiEnhancementTemperature, specifier: "%.2f")")
                     .monospacedDigit()
                     .font(.caption)
                     .foregroundColor(.secondary)
@@ -657,9 +657,9 @@ struct AIEnhancementView: View {
             ZStack {
                 Slider(
                     value: Binding(
-                        get: { store.hexSettings.aiEnhancementTemperature },
+                        get: { store.dictaFlowSettings.aiEnhancementTemperature },
                         set: { newValue in
-                            store.$hexSettings.withLock { $0.aiEnhancementTemperature = newValue }
+                            store.$dictaFlowSettings.withLock { $0.aiEnhancementTemperature = newValue }
                         }
                     ),
                     in: 0...1,
@@ -724,9 +724,9 @@ struct AIEnhancementView: View {
                     VStack(spacing: 8) {
                         // Editor
                         TextEditor(text: Binding(
-                            get: { store.hexSettings.aiEnhancementPrompt },
+                            get: { store.dictaFlowSettings.aiEnhancementPrompt },
                             set: { newValue in
-                                store.$hexSettings.withLock { $0.aiEnhancementPrompt = newValue }
+                                store.$dictaFlowSettings.withLock { $0.aiEnhancementPrompt = newValue }
                             }
                         ))
                         .font(.system(.body, design: .monospaced))
@@ -749,7 +749,7 @@ struct AIEnhancementView: View {
                     }
                 } else {
                     // Collapsed preview
-                    Text(store.hexSettings.aiEnhancementPrompt)
+                    Text(store.dictaFlowSettings.aiEnhancementPrompt)
                         .font(.caption)
                         .foregroundColor(.secondary)
                         .lineLimit(4)
@@ -808,9 +808,9 @@ struct AIEnhancementView: View {
                     VStack(spacing: 8) {
                         // Editor
                         TextEditor(text: Binding(
-                            get: { store.hexSettings.voiceRecognitionPrompt },
+                            get: { store.dictaFlowSettings.voiceRecognitionPrompt },
                             set: { newValue in
-                                store.$hexSettings.withLock { $0.voiceRecognitionPrompt = newValue }
+                                store.$dictaFlowSettings.withLock { $0.voiceRecognitionPrompt = newValue }
                             }
                         ))
                         .font(.system(.body, design: .monospaced))
@@ -823,7 +823,7 @@ struct AIEnhancementView: View {
 
                         // Clear button
                         Button("Clear") {
-                            store.$hexSettings.withLock { $0.voiceRecognitionPrompt = "" }
+                            store.$dictaFlowSettings.withLock { $0.voiceRecognitionPrompt = "" }
                         }
                         .buttonStyle(DefaultButtonStyle())
                         .font(.caption)
@@ -833,7 +833,7 @@ struct AIEnhancementView: View {
                     }
                 } else {
                     // Collapsed preview or placeholder
-                    if store.hexSettings.voiceRecognitionPrompt.isEmpty {
+                    if store.dictaFlowSettings.voiceRecognitionPrompt.isEmpty {
                         Text("No initial prompt set")
                             .font(.caption)
                             .foregroundColor(.secondary)
@@ -845,7 +845,7 @@ struct AIEnhancementView: View {
                                     .fill(Color.secondary.opacity(0.05))
                             )
                     } else {
-                        Text(store.hexSettings.voiceRecognitionPrompt)
+                        Text(store.dictaFlowSettings.voiceRecognitionPrompt)
                             .font(.caption)
                             .foregroundColor(.secondary)
                             .lineLimit(3)
@@ -890,9 +890,9 @@ struct AIEnhancementView: View {
     private func getCurrentSelectedModel() -> String {
         switch store.currentProvider {
         case .ollama:
-            return store.hexSettings.selectedAIModel
+            return store.dictaFlowSettings.selectedAIModel
         case .groq:
-            return store.hexSettings.selectedRemoteModel
+            return store.dictaFlowSettings.selectedRemoteModel
         }
     }
     
@@ -900,9 +900,9 @@ struct AIEnhancementView: View {
     private func getCurrentSelectedImageModel() -> String {
         switch store.currentProvider {
         case .ollama:
-            return store.hexSettings.selectedImageModel
+            return store.dictaFlowSettings.selectedImageModel
         case .groq:
-            return store.hexSettings.selectedRemoteImageModel
+            return store.dictaFlowSettings.selectedRemoteImageModel
         }
     }
     
@@ -911,9 +911,9 @@ struct AIEnhancementView: View {
         Section {
             VStack(alignment: .leading, spacing: 8) {
                 Toggle(isOn: Binding(
-                    get: { store.hexSettings.enableScreenCapture },
+                    get: { store.dictaFlowSettings.enableScreenCapture },
                     set: { newValue in 
-                        store.$hexSettings.withLock { $0.enableScreenCapture = newValue }
+                        store.$dictaFlowSettings.withLock { $0.enableScreenCapture = newValue }
                     }
                 )) {
                     Label {
@@ -969,9 +969,9 @@ struct AIEnhancementView: View {
                     VStack(spacing: 8) {
                         // Editor
                         TextEditor(text: Binding(
-                            get: { store.hexSettings.imageAnalysisPrompt },
+                            get: { store.dictaFlowSettings.imageAnalysisPrompt },
                             set: { newValue in
-                                store.$hexSettings.withLock { $0.imageAnalysisPrompt = newValue }
+                                store.$dictaFlowSettings.withLock { $0.imageAnalysisPrompt = newValue }
                             }
                         ))
                         .font(.system(.body, design: .monospaced))
@@ -994,7 +994,7 @@ struct AIEnhancementView: View {
                     }
                 } else {
                     // Collapsed preview
-                    Text(store.hexSettings.imageAnalysisPrompt)
+                    Text(store.dictaFlowSettings.imageAnalysisPrompt)
                         .font(.caption)
                         .foregroundColor(.secondary)
                         .lineLimit(4)
