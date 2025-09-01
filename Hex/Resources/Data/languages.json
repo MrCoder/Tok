@@ -36,7 +36,15 @@
     },
     {
         "code": "zh",
-        "name": "Chinese"
+        "name": "Chinese (Auto)"
+    },
+    {
+        "code": "zh-CN",
+        "name": "Chinese (Simplified)"
+    },
+    {
+        "code": "zh-TW",
+        "name": "Chinese (Traditional)"
     },
     {
         "code": "hr",
