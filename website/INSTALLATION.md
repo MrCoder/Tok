@@ -6,7 +6,7 @@ DictaFlow is now properly signed with a Developer ID certificate! This means you
 
 ## Installation Steps
 
-1. **Download**: Click the download button to get `DictaFlow-v1.0.0.dmg`
+1. **Download**: Click the download button to get `DictaFlow-v0.9.2.dmg`
 2. **Open DMG**: Double-click the downloaded DMG file
 3. **Install**: Drag DictaFlow.app to the Applications folder
 4. **Launch**: Open DictaFlow from your Applications folder
