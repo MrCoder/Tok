@@ -11,5 +11,10 @@ updates/
 *.xcuserstate
 buildServer.json
 bin
-scripts
 ExportOptions.plist
+
+# Sparkle auto-update security
+sparkle_private_key.txt
+sparkle_public_key.txt
+*.dmg
+signature.tmp

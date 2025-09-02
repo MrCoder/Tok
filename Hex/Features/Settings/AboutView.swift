@@ -35,5 +35,34 @@ struct AboutView: View {
             }
         }
         .formStyle(.grouped)
+        .onAppear {
+            // Sync Sparkle settings with app settings
+            viewModel.updateSettings(
+                enableAutoUpdates: store.dictaFlowSettings.enableAutoUpdates,
+                enableAutoUpdateChecks: store.dictaFlowSettings.enableAutoUpdateChecks,
+                checkInterval: store.dictaFlowSettings.autoUpdateCheckInterval
+            )
+        }
+        .onChange(of: store.dictaFlowSettings.enableAutoUpdates) { _, newValue in
+            viewModel.updateSettings(
+                enableAutoUpdates: newValue,
+                enableAutoUpdateChecks: store.dictaFlowSettings.enableAutoUpdateChecks,
+                checkInterval: store.dictaFlowSettings.autoUpdateCheckInterval
+            )
+        }
+        .onChange(of: store.dictaFlowSettings.enableAutoUpdateChecks) { _, newValue in
+            viewModel.updateSettings(
+                enableAutoUpdates: store.dictaFlowSettings.enableAutoUpdates,
+                enableAutoUpdateChecks: newValue,
+                checkInterval: store.dictaFlowSettings.autoUpdateCheckInterval
+            )
+        }
+        .onChange(of: store.dictaFlowSettings.autoUpdateCheckInterval) { _, newValue in
+            viewModel.updateSettings(
+                enableAutoUpdates: store.dictaFlowSettings.enableAutoUpdates,
+                enableAutoUpdateChecks: store.dictaFlowSettings.enableAutoUpdateChecks,
+                checkInterval: newValue
+            )
+        }
     }
 }

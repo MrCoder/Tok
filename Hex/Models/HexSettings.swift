@@ -48,6 +48,11 @@ struct DictaFlowSettings: Codable, Equatable {
     var imageAnalysisPrompt: String = defaultImageAnalysisPrompt
     // Developer options
     var developerModeEnabled: Bool = false // Hidden developer mode flag
+    
+    // Auto-update settings
+    var enableAutoUpdates: Bool = true
+    var enableAutoUpdateChecks: Bool = true
+    var autoUpdateCheckInterval: Int = 86400 // 24 hours in seconds
 
 	// Define coding keys to match struct properties
 	enum CodingKeys: String, CodingKey {
@@ -80,6 +85,9 @@ struct DictaFlowSettings: Codable, Equatable {
         case selectedRemoteImageModel
         case imageAnalysisPrompt
         case developerModeEnabled
+        case enableAutoUpdates
+        case enableAutoUpdateChecks
+        case autoUpdateCheckInterval
 	}
 
 	init(
@@ -111,7 +119,10 @@ struct DictaFlowSettings: Codable, Equatable {
         selectedImageModel: String = "llava:latest",
         selectedRemoteImageModel: String = "llava-v1.5-7b-4096-preview",
         imageAnalysisPrompt: String = defaultImageAnalysisPrompt,
-        developerModeEnabled: Bool = false
+        developerModeEnabled: Bool = false,
+        enableAutoUpdates: Bool = true,
+        enableAutoUpdateChecks: Bool = true,
+        autoUpdateCheckInterval: Int = 86400
 	) {
 		self.soundEffectsEnabled = soundEffectsEnabled
 		self.hotkey = hotkey
@@ -142,6 +153,9 @@ struct DictaFlowSettings: Codable, Equatable {
         self.selectedRemoteImageModel = selectedRemoteImageModel
         self.imageAnalysisPrompt = imageAnalysisPrompt
         self.developerModeEnabled = developerModeEnabled
+        self.enableAutoUpdates = enableAutoUpdates
+        self.enableAutoUpdateChecks = enableAutoUpdateChecks
+        self.autoUpdateCheckInterval = autoUpdateCheckInterval
 	}
 
 	// Custom decoder that handles missing fields
@@ -195,6 +209,11 @@ struct DictaFlowSettings: Codable, Equatable {
         imageAnalysisPrompt = try container.decodeIfPresent(String.self, forKey: .imageAnalysisPrompt) ?? defaultImageAnalysisPrompt
         // Developer options
         developerModeEnabled = try container.decodeIfPresent(Bool.self, forKey: .developerModeEnabled) ?? false
+        
+        // Auto-update settings
+        enableAutoUpdates = try container.decodeIfPresent(Bool.self, forKey: .enableAutoUpdates) ?? true
+        enableAutoUpdateChecks = try container.decodeIfPresent(Bool.self, forKey: .enableAutoUpdateChecks) ?? true
+        autoUpdateCheckInterval = try container.decodeIfPresent(Int.self, forKey: .autoUpdateCheckInterval) ?? 86400
 	}
 }
 

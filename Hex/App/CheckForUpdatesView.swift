@@ -81,6 +81,12 @@ final class CheckForUpdatesViewModel {
 	func checkForUpdates() {
 		controller.updater.checkForUpdates()
 	}
+	
+	func updateSettings(enableAutoUpdates: Bool, enableAutoUpdateChecks: Bool, checkInterval: Int) {
+		controller.updater.automaticallyDownloadsUpdates = enableAutoUpdates
+		controller.updater.automaticallyChecksForUpdates = enableAutoUpdateChecks
+		controller.updater.updateCheckInterval = TimeInterval(checkInterval)
+	}
 }
 
 struct CheckForUpdatesView: View {

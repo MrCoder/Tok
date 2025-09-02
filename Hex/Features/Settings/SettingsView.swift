@@ -241,6 +241,40 @@ struct SettingsView: View {
 			} header: {
 				Text("General")
 			}
+			
+			// --- Updates Section ---
+			Section {
+				Label {
+					Toggle("Enable automatic updates", isOn: $store.dictaFlowSettings.enableAutoUpdates)
+					Text("Automatically download and install updates when available")
+				} icon: {
+					Image(systemName: "arrow.clockwise.circle")
+				}
+				
+				Label {
+					Toggle("Check for updates automatically", isOn: $store.dictaFlowSettings.enableAutoUpdateChecks)
+					Text("Periodically check for new versions")
+				} icon: {
+					Image(systemName: "magnifyingglass.circle")
+				}
+				
+				Label {
+					Picker("Check interval", selection: $store.dictaFlowSettings.autoUpdateCheckInterval) {
+						Text("Every hour").tag(3600)
+						Text("Every 6 hours").tag(21600)
+						Text("Daily").tag(86400)
+						Text("Weekly").tag(604800)
+					}
+					.pickerStyle(.menu)
+					Text("How often to check for updates")
+				} icon: {
+					Image(systemName: "clock")
+				}
+				.disabled(!store.dictaFlowSettings.enableAutoUpdateChecks)
+				
+			} header: {
+				Text("Updates")
+			}
 		}
 		.formStyle(.grouped)
 		.task {
