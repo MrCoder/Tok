@@ -29,7 +29,7 @@ struct DictaFlowApp: App {
 				EmptyView()
 			} icon: {
 				WithViewStore(DictaFlowApp.appStore, observe: { $0.transcription }) { viewStore in
-					PacmanBarIcon(
+					WaveBarIcon(
 						averagePower: viewStore.meter.averagePower,
 						peakPower: viewStore.meter.peakPower,
 						isRecording: viewStore.isRecording

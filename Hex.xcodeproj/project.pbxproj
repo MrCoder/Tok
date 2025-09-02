@@ -37,7 +37,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		476BAD402D47E8500088C61F /* Exceptions for "Hex" folder in "Tok" target */ = {
+		476BAD402D47E8500088C61F /* Exceptions for "Hex" folder in "DictaFlow" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -55,7 +55,7 @@
 		47E05DF02D444EC600D26DA6 /* Hex */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				476BAD402D47E8500088C61F /* Exceptions for "Hex" folder in "Tok" target */,
+				476BAD402D47E8500088C61F /* Exceptions for "Hex" folder in "DictaFlow" target */,
 			);
 			path = Hex;
 			sourceTree = "<group>";
@@ -153,7 +153,7 @@
 		};
 		47E05DED2D444EC600D26DA6 /* DictaFlow */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 47E05DFD2D444EC700D26DA6 /* Build configuration list for PBXNativeTarget "Tok" */;
+			buildConfigurationList = 47E05DFD2D444EC700D26DA6 /* Build configuration list for PBXNativeTarget "DictaFlow" */;
 			buildPhases = (
 				47E05DEA2D444EC600D26DA6 /* Sources */,
 				47E05DEB2D444EC600D26DA6 /* Frameworks */,
@@ -199,7 +199,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 47E05DE92D444EC600D26DA6 /* Build configuration list for PBXProject "DictaFlow" */;
+			buildConfigurationList = 47E05DE92D444EC600D26DA6 /* Build configuration list for PBXProject "Hex" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -510,7 +510,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		47E05DE92D444EC600D26DA6 /* Build configuration list for PBXProject "DictaFlow" */ = {
+		47E05DE92D444EC600D26DA6 /* Build configuration list for PBXProject "Hex" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				47E05DFB2D444EC700D26DA6 /* Debug */,
