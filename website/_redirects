@@ -1,9 +1,5 @@
 # Redirects for DictaFlow.ai website on Cloudflare Pages
 
-# Redirect common variations to main domain
-/dictaflow.ai/* https://dictaflow.ai/:splat 301!
-/www.dictaflow.ai/* https://dictaflow.ai/:splat 301!
-
 # App download redirect (update when app is available)
 /download /index.html#download 302
 /app /index.html#download 302
@@ -14,8 +10,8 @@
 /source https://github.com/dictaflow/dictaflow 302
 /code https://github.com/dictaflow/dictaflow 302
 
-# Support redirects
-/support mailto:support@dictaflow.ai 302
+# Support redirects (redirect to contact section)
+/support /index.html#contact 302
 /help https://github.com/dictaflow/dictaflow/issues 302
 /issues https://github.com/dictaflow/dictaflow/issues 302
 
@@ -23,8 +19,5 @@
 /privacy-policy /privacy.html 301
 /terms /privacy.html 301
 
-# API endpoint placeholders (for future use)
-/api/* /api/index.html 404
-
-# Catch-all for SPA-like behavior
-/* /index.html 200
+# 404 handling - redirect to custom 404 page
+/api/* /404.html 200
