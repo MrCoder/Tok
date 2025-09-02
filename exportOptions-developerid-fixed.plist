@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>method</key>
+    <string>developer-id</string>
+    <key>teamID</key>
+    <string>V7P333H7L7</string>
+    <key>signingStyle</key>
+    <string>manual</string>
+    <key>signingCertificate</key>
+    <string>Developer ID Application: Peng Xiao (V7P333H7L7)</string>
+    <key>stripSwiftSymbols</key>
+    <true/>
+    <key>thinning</key>
+    <string>&lt;none&gt;</string>
+    <key>destination</key>
+    <string>export</string>
+    <key>provisioningProfiles</key>
+    <dict>
+        <key>ai.dictaflow.DictaFlow</key>
+        <string>match Development ai.dictaflow.DictaFlow</string>
+    </dict>
+</dict>
+</plist>

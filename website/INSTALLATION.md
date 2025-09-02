@@ -1,10 +1,19 @@
 # DictaFlow Installation Guide
 
-## macOS Security Warning
+## ✅ Properly Signed App
 
-When you first open DictaFlow, you may see a security warning: *"Apple could not verify DictaFlow is free of malware..."*
+DictaFlow is now properly signed with a Developer ID certificate! This means you should **no longer see security warnings** when installing and running the app.
 
-This is normal for apps distributed outside the Mac App Store. Here's how to safely install DictaFlow:
+## Installation Steps
+
+1. **Download**: Click the download button to get `DictaFlow-v1.0.0.dmg`
+2. **Open DMG**: Double-click the downloaded DMG file
+3. **Install**: Drag DictaFlow.app to the Applications folder
+4. **Launch**: Open DictaFlow from your Applications folder
+
+## If You Still See a Security Warning
+
+If you encounter any security warnings (which should be rare now), here's how to resolve them:
 
 ### Method 1: Right-Click to Open (Recommended)
 
